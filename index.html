@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>MARE（マレ）| 食と贈り物をつなぐデジタルプラットフォーム</title>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600;700&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --navy:   #1a2e4a;
+      --ocean:  #4a9aba;
+      --sky:    #7bbfd4;
+      --mist:   #b8dce8;
+      --pale:   #eaf4f8;
+      --white:  #ffffff;
+      --ink:    #1a2e4a;
+      --soft:   #4a6478;
+      --line:   #d6e8f0;
+      --bg:     #f7fbfd;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+
+    body {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      color: var(--ink);
+      background: var(--white);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ─── Nav ─── */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 18px 40px;
+      background: rgba(26, 46, 74, 0.92);
+      backdrop-filter: blur(10px);
+    }
+
+    .nav-logo {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 4px;
+      text-decoration: none;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 32px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      color: rgba(255,255,255,0.75);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover { color: var(--white); }
+
+    /* ─── Hero ─── */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+      background: linear-gradient(160deg, #0d1e33 0%, #1a2e4a 35%, #1e4a6a 65%, #2a6e8a 100%);
+    }
+
+    /* 波紋装飾 */
+    .hero-deco {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .hero-deco-circle {
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(74, 154, 186, 0.15);
+    }
+
+    .hero-deco-circle:nth-child(1) {
+      width: 600px; height: 600px;
+      right: -100px; bottom: -150px;
+    }
+    .hero-deco-circle:nth-child(2) {
+      width: 900px; height: 900px;
+      right: -250px; bottom: -350px;
+      border-color: rgba(74, 154, 186, 0.08);
+    }
+    .hero-deco-circle:nth-child(3) {
+      width: 1200px; height: 1200px;
+      right: -400px; bottom: -550px;
+      border-color: rgba(74, 154, 186, 0.05);
+    }
+
+    /* 山シルエット */
+    .hero-mountain {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%;
+      opacity: 0.18;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      max-width: 640px;
+      padding: 120px 40px 80px;
+      margin-left: max(40px, calc(50vw - 580px));
+    }
+
+    .hero-eyebrow {
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: var(--sky);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .hero-title {
+      font-family: 'Shippori Mincho', serif;
+      font-size: clamp(36px, 5vw, 58px);
+      font-weight: 600;
+      color: var(--white);
+      line-height: 1.55;
+      letter-spacing: 0.06em;
+      margin-bottom: 28px;
+    }
+
+    .hero-title span {
+      display: block;
+      font-size: clamp(20px, 2.5vw, 26px);
+      font-weight: 400;
+      color: var(--sky);
+      letter-spacing: 0.1em;
+      margin-bottom: 12px;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      line-height: 2.0;
+      color: rgba(255,255,255,0.65);
+      font-weight: 300;
+      margin-bottom: 48px;
+      max-width: 480px;
+    }
+
+    .hero-actions {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 16px 36px;
+      background: var(--ocean);
+      color: var(--white);
+      font-size: 15px;
+      font-weight: 500;
+      letter-spacing: 1px;
+      border: none;
+      border-radius: 4px;
+      text-decoration: none;
+      transition: background 0.2s, transform 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: var(--sky);
+      transform: translateY(-2px);
+    }
+
+    .btn-outline {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 15px 36px;
+      background: transparent;
+      color: rgba(255,255,255,0.8);
+      font-size: 15px;
+      font-weight: 400;
+      letter-spacing: 1px;
+      border: 1px solid rgba(255,255,255,0.3);
+      border-radius: 4px;
+      text-decoration: none;
+      transition: border-color 0.2s, color 0.2s;
+    }
+
+    .btn-outline:hover {
+      border-color: rgba(255,255,255,0.7);
+      color: var(--white);
+    }
+
+    .hero-scroll {
+      position: absolute;
+      bottom: 40px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: rgba(255,255,255,0.35);
+      font-size: 11px;
+      letter-spacing: 2px;
+    }
+
+    .hero-scroll-line {
+      width: 1px;
+      height: 48px;
+      background: linear-gradient(to bottom, rgba(255,255,255,0.4), transparent);
+      animation: scrollLine 1.8s ease-in-out infinite;
+    }
+
+    @keyframes scrollLine {
+      0%, 100% { opacity: 0.4; }
+      50% { opacity: 1; }
+    }
+
+    /* ─── Section base ─── */
+    section {
+      padding: 100px 40px;
+    }
+
+    .section-inner {
+      max-width: 1080px;
+      margin: 0 auto;
+    }
+
+    .section-eyebrow {
+      font-size: 12px;
+      letter-spacing: 4px;
+      color: var(--ocean);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .section-title {
+      font-family: 'Shippori Mincho', serif;
+      font-size: clamp(28px, 4vw, 42px);
+      font-weight: 600;
+      line-height: 1.55;
+      color: var(--navy);
+      margin-bottom: 24px;
+    }
+
+    .section-lead {
+      font-size: 17px;
+      line-height: 2.1;
+      color: var(--soft);
+      font-weight: 300;
+      max-width: 600px;
+    }
+
+    .divider {
+      width: 40px;
+      height: 2px;
+      background: linear-gradient(90deg, var(--ocean), var(--mist));
+      margin: 32px 0;
+      border-radius: 2px;
+    }
+
+    /* ─── About ─── */
+    .about {
+      background: var(--bg);
+    }
+
+    .about-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      align-items: center;
+      margin-top: 64px;
+    }
+
+    .about-visual {
+      position: relative;
+      height: 360px;
+      background: linear-gradient(135deg, var(--navy) 0%, #1e4a6a 50%, #2a6e8a 100%);
+      border-radius: 4px;
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .about-visual-text {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 72px;
+      font-weight: 700;
+      color: rgba(255,255,255,0.12);
+      letter-spacing: 8px;
+      user-select: none;
+    }
+
+    .about-visual-tag {
+      position: absolute;
+      bottom: 28px;
+      left: 28px;
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: var(--sky);
+    }
+
+    .about-points {
+      display: flex;
+      flex-direction: column;
+      gap: 32px;
+      margin-top: 16px;
+    }
+
+    .about-point {
+      display: flex;
+      gap: 20px;
+      align-items: flex-start;
+    }
+
+    .about-point-num {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 32px;
+      font-weight: 600;
+      color: var(--mist);
+      line-height: 1;
+      flex-shrink: 0;
+      width: 40px;
+    }
+
+    .about-point-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 6px;
+    }
+
+    .about-point-text {
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--soft);
+      font-weight: 300;
+    }
+
+    /* ─── Services ─── */
+    .service {
+      background: var(--white);
+    }
+
+    .service-alt {
+      background: var(--navy);
+    }
+
+    .service-alt .section-eyebrow { color: var(--sky); }
+    .service-alt .section-title   { color: var(--white); }
+    .service-alt .section-lead    { color: rgba(255,255,255,0.65); }
+    .service-alt .divider         { background: linear-gradient(90deg, var(--sky), rgba(255,255,255,0.2)); }
+
+    .service-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 28px;
+      margin-top: 56px;
+    }
+
+    .service-card {
+      padding: 36px 28px;
+      background: var(--bg);
+      border-radius: 4px;
+      border: 1px solid var(--line);
+    }
+
+    .service-alt .service-card {
+      background: rgba(255,255,255,0.05);
+      border-color: rgba(255,255,255,0.1);
+    }
+
+    .service-card-icon {
+      width: 48px;
+      height: 48px;
+      background: var(--pale);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 20px;
+    }
+
+    .service-alt .service-card-icon {
+      background: rgba(74, 154, 186, 0.2);
+    }
+
+    .service-card-icon svg {
+      width: 24px;
+      height: 24px;
+      stroke: var(--ocean);
+    }
+
+    .service-alt .service-card-icon svg {
+      stroke: var(--sky);
+    }
+
+    .service-card-title {
+      font-size: 16px;
+      font-weight: 500;
+      color: var(--navy);
+      margin-bottom: 10px;
+    }
+
+    .service-alt .service-card-title { color: var(--white); }
+
+    .service-card-text {
+      font-size: 14px;
+      line-height: 1.9;
+      color: var(--soft);
+      font-weight: 300;
+    }
+
+    .service-alt .service-card-text { color: rgba(255,255,255,0.55); }
+
+    /* ─── Demo CTA ─── */
+    .demo-cta {
+      background: linear-gradient(135deg, #0d1e33 0%, #1a2e4a 60%, #1e4a6a 100%);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .demo-cta-deco {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+    }
+
+    .demo-cta-deco::before,
+    .demo-cta-deco::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      border: 1px solid rgba(74, 154, 186, 0.12);
+    }
+
+    .demo-cta-deco::before {
+      width: 600px; height: 600px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .demo-cta-deco::after {
+      width: 900px; height: 900px;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+    }
+
+    .demo-cta .section-inner {
+      position: relative;
+      z-index: 1;
+    }
+
+    .demo-cta .section-eyebrow { color: var(--sky); }
+
+    .demo-cta .section-title {
+      color: var(--white);
+      margin-bottom: 20px;
+    }
+
+    .demo-cta .section-lead {
+      color: rgba(255,255,255,0.6);
+      max-width: 500px;
+      margin: 0 auto 48px;
+    }
+
+    .demo-cta .divider {
+      margin: 24px auto;
+    }
+
+    /* ─── Contact ─── */
+    .contact {
+      background: var(--bg);
+      text-align: center;
+    }
+
+    .contact .section-lead {
+      margin: 0 auto;
+      margin-bottom: 48px;
+    }
+
+    .contact .divider { margin: 24px auto; }
+
+    .contact-box {
+      display: inline-block;
+      padding: 48px 64px;
+      background: var(--white);
+      border: 1px solid var(--line);
+      border-radius: 4px;
+      margin-top: 8px;
+    }
+
+    .contact-label {
+      font-size: 12px;
+      letter-spacing: 3px;
+      color: var(--ocean);
+      text-transform: uppercase;
+      margin-bottom: 16px;
+    }
+
+    .contact-email {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 22px;
+      color: var(--navy);
+      text-decoration: none;
+      letter-spacing: 1px;
+      transition: color 0.2s;
+    }
+
+    .contact-email:hover { color: var(--ocean); }
+
+    .contact-note {
+      font-size: 13px;
+      color: var(--soft);
+      margin-top: 16px;
+      font-weight: 300;
+      line-height: 1.8;
+    }
+
+    /* ─── Footer ─── */
+    footer {
+      background: var(--navy);
+      padding: 40px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--white);
+      letter-spacing: 5px;
+      margin-bottom: 12px;
+    }
+
+    .footer-copy {
+      font-size: 12px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 1px;
+    }
+
+    /* ─── Responsive ─── */
+    @media (max-width: 768px) {
+      nav { padding: 16px 20px; }
+      .nav-links { display: none; }
+
+      section { padding: 72px 20px; }
+
+      .hero-content {
+        padding: 100px 20px 80px;
+        margin-left: 0;
+      }
+
+      .about-grid {
+        grid-template-columns: 1fr;
+        gap: 40px;
+      }
+
+      .about-visual { height: 220px; }
+
+      .service-grid {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+
+      .contact-box {
+        padding: 36px 24px;
+        width: 100%;
+      }
+
+      .hero-actions { flex-direction: column; }
+      .btn-primary, .btn-outline { text-align: center; justify-content: center; }
+    }
+
+    /* ─── Fade-in animation ─── */
+    .fade-up {
+      opacity: 0;
+      transform: translateY(24px);
+      transition: opacity 0.7s ease, transform 0.7s ease;
+    }
+    .fade-up.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  </style>
+</head>
+<body>
+
+<!-- ═══ Nav ═══ -->
+<nav>
+  <a href="#" class="nav-logo">MARE</a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#service-gift">Gift</a></li>
+    <li><a href="#service-oem">OEM</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- ═══ Hero ═══ -->
+<section class="hero" id="hero">
+  <div class="hero-deco">
+    <div class="hero-deco-circle"></div>
+    <div class="hero-deco-circle"></div>
+    <div class="hero-deco-circle"></div>
+  </div>
+
+  <!-- 立山シルエット -->
+  <svg class="hero-mountain" viewBox="0 0 1440 240" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 240 L120 160 L240 195 L380 110 L520 175 L660 80 L800 148 L940 95 L1080 135 L1220 72 L1360 115 L1440 90 L1440 240 Z" fill="white"/>
+  </svg>
+
+  <div class="hero-content">
+    <p class="hero-eyebrow fade-up">Digital Gift Platform</p>
+    <h1 class="hero-title fade-up">
+      <span>食と贈り物をつなぐ、</span>
+      北陸の恵みを<br>あなたの想いとともに。
+    </h1>
+    <p class="hero-desc fade-up">
+      MAREは、大企業と地域の食品生産者を繋ぐデジタルギフト管理プラットフォームです。
+      北陸の豊かな食文化を、贈り物という形で次世代へ届けます。
+    </p>
+    <div class="hero-actions fade-up">
+      <a href="demo.html" class="btn-primary">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        デモを体験する
+      </a>
+      <a href="#about" class="btn-outline">詳しく見る</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll">
+    <div class="hero-scroll-line"></div>
+    <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ═══ About ═══ -->
+<section class="about" id="about">
+  <div class="section-inner">
+    <p class="section-eyebrow fade-up">About</p>
+    <h2 class="section-title fade-up">MAREとは</h2>
+    <p class="section-lead fade-up">
+      「MARE（マレ）」は、希少で特別なものを意味します。<br>
+      私たちは、地域に根ざした食品生産者の技と想いを、大企業のギフト文化を通じて広く届けるプラットフォームです。
+    </p>
+    <div class="divider fade-up"></div>
+
+    <div class="about-grid">
+      <div class="about-visual fade-up">
+        <span class="about-visual-text">MARE</span>
+        <span class="about-visual-tag">TOYAMA · HOKURIKU · JAPAN</span>
+      </div>
+      <div class="about-points">
+        <div class="about-point fade-up">
+          <span class="about-point-num">01</span>
+          <div>
+            <div class="about-point-title">地域と企業をつなぐ</div>
+            <p class="about-point-text">北陸をはじめとする地域の食品メーカー・生産者と、全国の大企業をデジタルで繋ぎます。ギフトという接点を通じて、地域経済の活性化に貢献します。</p>
+          </div>
+        </div>
+        <div class="about-point fade-up">
+          <span class="about-point-num">02</span>
+          <div>
+            <div class="about-point-title">デジタルで、シームレスに</div>
+            <p class="about-point-text">コード一枚で完結するデジタルギフト管理システム。受け取り手が自分でお届け先を入力するため、個人情報の管理が不要で、担当者の負担を大幅に軽減します。</p>
+          </div>
+        </div>
+        <div class="about-point fade-up">
+          <span class="about-point-num">03</span>
+          <div>
+            <div class="about-point-title">想いが伝わるギフト体験</div>
+            <p class="about-point-text">企業ブランドに合わせてカスタマイズされたギフトページで、受け取り手に特別な体験を提供。贈る側の想いを、デザインに込めます。</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Service① デジタルギフト ═══ -->
+<section class="service" id="service-gift">
+  <div class="section-inner">
+    <p class="section-eyebrow fade-up">Service 01</p>
+    <h2 class="section-title fade-up">デジタルギフト<br>管理プラットフォーム</h2>
+    <p class="section-lead fade-up">
+      企業のギフト担当者の課題を解決する、クラウド型のデジタルギフト管理システム。
+      コードを発行するだけで、ギフト配布から発送管理まで一元管理できます。
+    </p>
+    <div class="divider fade-up"></div>
+
+    <div class="service-grid">
+      <div class="service-card fade-up">
+        <div class="service-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="4" width="18" height="18" rx="2"/><path d="M16 2v4M8 2v4M3 10h18"/>
+          </svg>
+        </div>
+        <div class="service-card-title">コード発行・管理</div>
+        <p class="service-card-text">6桁のギフトコードを一括発行。使用状況・発送状況をリアルタイムで管理画面から確認できます。</p>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/>
+          </svg>
+        </div>
+        <div class="service-card-title">ブランドカスタマイズ</div>
+        <p class="service-card-text">企業のテーマカラー・ロゴ・キャッチコピーに合わせてギフトページをカスタマイズ。ブランド体験を損なわないギフト提供が可能です。</p>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"/><circle cx="12" cy="10" r="3"/>
+          </svg>
+        </div>
+        <div class="service-card-title">発送管理・通知</div>
+        <p class="service-card-text">生産者への発送依頼から完了通知まで自動化。お届け先情報の収集も受け取り手が自身で行うため、個人情報管理が不要です。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Service② 食品OEM ═══ -->
+<section class="service service-alt" id="service-oem">
+  <div class="section-inner">
+    <p class="section-eyebrow fade-up">Service 02</p>
+    <h2 class="section-title fade-up">食品OEM<br>マッチングプラットフォーム</h2>
+    <p class="section-lead fade-up">
+      大企業のオリジナル商品開発ニーズと、北陸・地域の食品メーカーの製造力を繋ぐ
+      マッチングプラットフォーム。（近日公開予定）
+    </p>
+    <div class="divider fade-up"></div>
+
+    <div class="service-grid">
+      <div class="service-card fade-up">
+        <div class="service-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+          </svg>
+        </div>
+        <div class="service-card-title">生産者マッチング</div>
+        <p class="service-card-text">商品カテゴリ・ロット・こだわりの条件から、最適な食品メーカー・生産者を検索・マッチングします。</p>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/>
+          </svg>
+        </div>
+        <div class="service-card-title">商談・交渉サポート</div>
+        <p class="service-card-text">初回コンタクトから契約に向けた交渉まで、MAREがコーディネーターとして仲介・サポートします。</p>
+      </div>
+      <div class="service-card fade-up">
+        <div class="service-card-icon">
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+          </svg>
+        </div>
+        <div class="service-card-title">地域ブランド活用</div>
+        <p class="service-card-text">北陸の食文化・産地ブランドを活かしたOEM商品開発を支援。「地域の味」を企業ブランドの一部として展開できます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Demo CTA ═══ -->
+<section class="demo-cta" id="demo">
+  <div class="demo-cta-deco"></div>
+  <div class="section-inner">
+    <p class="section-eyebrow fade-up">Demo</p>
+    <h2 class="section-title fade-up">ギフト体験を、<br>まず試してみてください。</h2>
+    <div class="divider fade-up"></div>
+    <p class="section-lead fade-up">
+      実際のギフト選択画面のデモをご用意しています。<br>
+      コード入力なしで、受け取り手の体験をそのままお試しいただけます。
+    </p>
+    <a href="demo.html" class="btn-primary fade-up">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+      デモページを開く
+    </a>
+  </div>
+</section>
+
+<!-- ═══ Contact ═══ -->
+<section class="contact" id="contact">
+  <div class="section-inner">
+    <p class="section-eyebrow fade-up">Contact</p>
+    <h2 class="section-title fade-up">お問い合わせ</h2>
+    <div class="divider fade-up"></div>
+    <p class="section-lead fade-up">
+      サービスに関するご質問・ご相談・お見積もりは、<br>
+      下記メールアドレスまでお気軽にご連絡ください。
+    </p>
+    <div class="contact-box fade-up">
+      <p class="contact-label">Email</p>
+      <a href="mailto:mare.corp.info@gmail.com" class="contact-email">mare.corp.info@gmail.com</a>
+      <p class="contact-note">
+        通常2営業日以内にご返信いたします。<br>
+        お問い合わせフォームは準備中です。
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══ Footer ═══ -->
+<footer>
+  <p class="footer-logo">MARE</p>
+  <p class="footer-copy">&copy; 2026 MARE. All rights reserved.</p>
+</footer>
+
+<script>
+  // Intersection Observer for fade-up animation
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry, i) => {
+      if (entry.isIntersecting) {
+        setTimeout(() => {
+          entry.target.classList.add('visible');
+        }, i * 80);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(el => observer.observe(el));
+</script>
+
+</body>
+</html>

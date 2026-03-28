@@ -1,0 +1,578 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>デモ | デジタルギフト体験 | MARE</title>
+  <link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;600&family=Zen+Kaku+Gothic+New:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep:  #0b2540;
+      --navy:  #153d6b;
+      --ocean: #1e6fa8;
+      --sky:   #3aadd9;
+      --mist:  #a8d8f0;
+      --pale:  #e4f3fb;
+      --white: #ffffff;
+      --ink:   #0d2035;
+      --soft:  #4a6a82;
+      --line:  #cce6f5;
+      --bg:    #f0f8fd;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { font-size: 18px; scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Zen Kaku Gothic New', sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -webkit-text-size-adjust: 100%;
+      text-size-adjust: 100%;
+    }
+
+    /* ─── Demo Banner ─── */
+    .demo-banner {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 200;
+      background: #1a2e4a;
+      color: #fff;
+      text-align: center;
+      padding: 10px 16px;
+      font-size: 13px;
+      letter-spacing: 1.5px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .demo-banner-badge {
+      background: #4a9aba;
+      color: #fff;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 2px;
+      padding: 3px 10px;
+      border-radius: 20px;
+      text-transform: uppercase;
+      flex-shrink: 0;
+    }
+
+    .demo-banner-back {
+      position: absolute;
+      right: 16px;
+      font-size: 12px;
+      color: rgba(255,255,255,0.6);
+      text-decoration: none;
+      letter-spacing: 0.5px;
+      transition: color 0.2s;
+    }
+
+    .demo-banner-back:hover { color: #fff; }
+
+    /* ─── Hero ─── */
+    .hero {
+      position: relative;
+      width: 100%;
+      height: 300px;
+      overflow: hidden;
+      margin-top: 38px; /* demo banner height */
+      background: linear-gradient(180deg, #7ec8e3 0%, #4aa8d8 25%, #2282b8 50%, #1a5f8a 70%, #0e3d60 100%);
+    }
+
+    .hero-clouds {
+      position: absolute;
+      top: 14px; left: 0;
+      width: 100%;
+      opacity: 0.55;
+    }
+
+    .hero-mountain {
+      position: absolute;
+      bottom: 0; left: 0;
+      width: 100%;
+    }
+
+    .hero-content {
+      position: absolute;
+      bottom: 32px; left: 24px; right: 24px;
+      z-index: 10;
+    }
+
+    .hero-label {
+      font-size: 14px;
+      letter-spacing: 2px;
+      color: rgba(255,255,255,0.7);
+      text-transform: uppercase;
+      margin-bottom: 8px;
+    }
+
+    .hero-title {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 36px;
+      font-weight: 600;
+      color: #fff;
+      line-height: 1.3;
+      letter-spacing: 0.06em;
+      text-shadow: 0 2px 12px rgba(0,30,70,0.45);
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      color: rgba(255,255,255,0.75);
+      margin-top: 8px;
+      letter-spacing: 1px;
+    }
+
+    /* ─── Step bar ─── */
+    .step-bar {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 14px 24px;
+      background: var(--navy);
+      gap: 8px;
+    }
+
+    .step-item {
+      display: flex; align-items: center; gap: 8px;
+      font-size: 15px;
+      color: rgba(255,255,255,0.4);
+      letter-spacing: 0.3px;
+    }
+
+    .step-item.active { color: #fff; font-weight: 500; }
+    .step-item.done   { color: rgba(255,255,255,0.6); }
+
+    .step-dot {
+      width: 30px; height: 30px;
+      border-radius: 50%;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px; font-weight: 600;
+      color: rgba(255,255,255,0.35);
+      flex-shrink: 0;
+    }
+
+    .step-item.active .step-dot { background: var(--sky); border-color: var(--sky); color: #fff; }
+    .step-item.done .step-dot   { background: var(--mist); border-color: var(--mist); color: var(--navy); }
+
+    .step-line { flex: 1; max-width: 36px; height: 1px; background: rgba(255,255,255,0.15); }
+
+    /* ─── Layout ─── */
+    .container { max-width: 480px; margin: 0 auto; padding: 0 20px 60px; }
+
+    .section { padding: 32px 0 0; }
+
+    .section-label {
+      font-size: 13px; letter-spacing: 2px;
+      text-transform: uppercase; color: var(--sky); margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 26px; font-weight: 600;
+      line-height: 1.55; margin-bottom: 12px; color: var(--ink);
+    }
+
+    .section-text { font-size: 17px; line-height: 2.0; color: var(--soft); font-weight: 300; }
+
+    .divider {
+      width: 36px; height: 2px;
+      background: linear-gradient(90deg, var(--sky), var(--mist));
+      margin: 28px 0; border-radius: 2px;
+    }
+
+    /* ─── Brand card ─── */
+    .brand-card {
+      background: var(--white);
+      border-radius: 18px; overflow: hidden;
+      margin-top: 20px;
+      border: 1px solid var(--line);
+      box-shadow: 0 4px 20px rgba(14,61,96,0.07);
+    }
+
+    .brand-card-image { width: 100%; height: 190px; object-fit: cover; display: block; }
+    .brand-card-body { padding: 22px; }
+
+    .brand-card-eyebrow {
+      font-size: 13px; letter-spacing: 2px;
+      color: var(--sky); text-transform: uppercase; margin-bottom: 8px;
+    }
+
+    .brand-card-title {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 22px; font-weight: 600;
+      margin-bottom: 10px; line-height: 1.5; color: var(--ink);
+    }
+
+    .brand-card-text { font-size: 16px; line-height: 1.95; color: var(--soft); font-weight: 300; }
+
+    /* ─── Product cards ─── */
+    .product-grid { display: flex; flex-direction: column; gap: 16px; margin-top: 20px; }
+
+    .product-card {
+      background: var(--white); border-radius: 18px; overflow: hidden;
+      border: 2px solid var(--line);
+      cursor: pointer;
+      transition: border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+      position: relative;
+    }
+
+    .product-card:active { transform: scale(0.985); }
+
+    .product-card.selected {
+      border-color: var(--ocean);
+      box-shadow: 0 0 0 1px var(--ocean), 0 6px 24px rgba(30,111,168,0.15);
+    }
+
+    .product-card input[type="radio"] { position: absolute; opacity: 0; width: 0; height: 0; }
+
+    .product-image-wrap {
+      position: relative; width: 100%; height: 220px;
+      overflow: hidden; background: var(--pale);
+    }
+
+    .product-image-wrap img {
+      width: 100%; height: 100%; object-fit: cover; display: block;
+      transition: transform 0.4s ease;
+    }
+
+    .product-card:hover .product-image-wrap img { transform: scale(1.04); }
+
+    .product-badge {
+      position: absolute; top: 14px; right: 14px;
+      background: var(--navy); color: #fff;
+      font-size: 14px; letter-spacing: 1px;
+      padding: 7px 16px; border-radius: 20px;
+    }
+
+    .selected-check {
+      position: absolute; top: 14px; left: 14px;
+      width: 32px; height: 32px; border-radius: 50%;
+      background: var(--ocean);
+      display: none; align-items: center; justify-content: center;
+    }
+
+    .product-card.selected .selected-check { display: flex; }
+    .selected-check svg { width: 16px; height: 16px; }
+
+    .product-body { padding: 20px 20px 22px; }
+
+    .product-name {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 19px; font-weight: 600; margin-bottom: 8px; color: var(--ink);
+    }
+
+    .product-desc { font-size: 15px; color: var(--soft); line-height: 1.8; font-weight: 300; }
+
+    .product-tag {
+      display: inline-block; margin-top: 12px;
+      font-size: 12px; letter-spacing: 1px;
+      color: var(--ocean); border: 1px solid var(--mist);
+      border-radius: 20px; padding: 5px 14px;
+      background: var(--pale);
+    }
+
+    /* ─── Buttons ─── */
+    .btn {
+      width: 100%; padding: 18px; border-radius: 14px; border: none;
+      font-size: 17px; font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 500; cursor: pointer; letter-spacing: 0.5px;
+      transition: opacity 0.2s, transform 0.15s, box-shadow 0.2s;
+    }
+
+    .btn:active { transform: scale(0.98); }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--ocean) 0%, var(--sky) 100%);
+      color: #fff;
+      box-shadow: 0 6px 20px rgba(30,111,168,0.3);
+    }
+
+    .btn-primary:hover { box-shadow: 0 8px 28px rgba(30,111,168,0.4); }
+
+    .btn-stack { margin-top: 28px; display: flex; flex-direction: column; gap: 10px; }
+
+    /* ─── Demo popup overlay ─── */
+    .demo-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 25, 45, 0.6);
+      backdrop-filter: blur(4px);
+      z-index: 300;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+    }
+
+    .demo-overlay.show { display: flex; }
+
+    .demo-popup {
+      background: var(--white);
+      border-radius: 20px;
+      padding: 40px 32px;
+      max-width: 380px;
+      width: 100%;
+      text-align: center;
+      box-shadow: 0 24px 60px rgba(10,25,45,0.25);
+      animation: popupIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+
+    @keyframes popupIn {
+      from { opacity: 0; transform: scale(0.88) translateY(16px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .demo-popup-icon {
+      width: 60px; height: 60px;
+      background: var(--pale);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 20px;
+    }
+
+    .demo-popup-icon svg { width: 28px; height: 28px; stroke: var(--ocean); }
+
+    .demo-popup-title {
+      font-family: 'Shippori Mincho', serif;
+      font-size: 20px; font-weight: 600;
+      color: var(--ink); margin-bottom: 12px;
+    }
+
+    .demo-popup-text {
+      font-size: 15px; line-height: 1.9;
+      color: var(--soft); font-weight: 300;
+      margin-bottom: 28px;
+    }
+
+    .demo-popup-btn {
+      width: 100%; padding: 14px;
+      background: var(--navy); color: #fff;
+      border: none; border-radius: 12px;
+      font-size: 15px; font-family: 'Zen Kaku Gothic New', sans-serif;
+      font-weight: 500; cursor: pointer;
+      letter-spacing: 0.5px;
+    }
+
+    .demo-popup-link {
+      display: block; margin-top: 14px;
+      font-size: 13px; color: var(--ocean);
+      text-decoration: none; letter-spacing: 0.5px;
+    }
+
+    .demo-popup-link:hover { text-decoration: underline; }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(14px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .fade-up { animation: fadeUp 0.45s ease both; }
+  </style>
+</head>
+<body>
+
+<!-- ═══ Demo Banner ═══ -->
+<div class="demo-banner">
+  <span class="demo-banner-badge">Demo</span>
+  <span>これはデモページです。実際の発注・個人情報の送信は行われません。</span>
+  <a href="index.html" class="demo-banner-back">← HPに戻る</a>
+</div>
+
+<!-- ═══ Hero ═══ -->
+<div class="hero">
+  <svg class="hero-clouds" viewBox="0 0 390 70" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <ellipse cx="55"  cy="32" rx="68" ry="22" fill="white"/>
+    <ellipse cx="95"  cy="20" rx="44" ry="17" fill="white"/>
+    <ellipse cx="275" cy="36" rx="75" ry="21" fill="white"/>
+    <ellipse cx="318" cy="24" rx="48" ry="16" fill="white"/>
+    <ellipse cx="185" cy="12" rx="32" ry="11" fill="white" opacity="0.55"/>
+  </svg>
+
+  <svg class="hero-mountain" viewBox="0 0 390 165" fill="none" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="none">
+    <path d="M0 165 L55 95 L95 112 L145 65 L195 98 L248 52 L298 88 L348 72 L390 92 L390 165 Z"
+      fill="#1a5a9a" opacity="0.35"/>
+    <path d="M0 165 L28 125 L75 100 L125 115 L175 78 L228 108 L275 72 L318 92 L365 82 L390 98 L390 165 Z"
+      fill="#0e3d6e" opacity="0.6"/>
+    <path d="M0 165 L45 135 L85 118 L135 92 L160 105 L185 80 L210 100 L240 85 L268 104 L295 76 L325 96 L358 84 L390 100 L390 165 Z"
+      fill="#0a2d52"/>
+    <path d="M185 80 L190 88 L185 84 L180 90 L175 86 L170 93 L165 90 L160 96 L155 100" fill="rgba(255,255,255,0.3)"/>
+    <path d="M295 76 L300 85 L295 81 L289 88 L283 84 L278 92 L268 104" fill="rgba(255,255,255,0.28)"/>
+    <rect x="0" y="148" width="390" height="17" fill="rgba(100,200,255,0.14)"/>
+  </svg>
+
+  <div class="hero-content">
+    <div class="hero-label">Digital Gift · SAMPLE</div>
+    <div class="hero-title">北陸建工グループより<br>贈り物をご用意しました</div>
+    <div class="hero-subtitle">下記よりお好みの商品をお選びください</div>
+  </div>
+</div>
+
+<!-- ═══ Step bar ═══ -->
+<div class="step-bar">
+  <div class="step-item done">
+    <div class="step-dot">
+      <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+    </div>
+    <span>コード入力</span>
+  </div>
+  <div class="step-line"></div>
+  <div class="step-item active">
+    <div class="step-dot">2</div><span>商品を選ぶ</span>
+  </div>
+  <div class="step-line"></div>
+  <div class="step-item">
+    <div class="step-dot">3</div><span>お届け先</span>
+  </div>
+  <div class="step-line"></div>
+  <div class="step-item">
+    <div class="step-dot">4</div><span>完了</span>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- From セクション -->
+  <div class="section fade-up">
+    <div class="section-label">From</div>
+    <div class="section-title">北陸建工グループより<br>ギフトのご案内</div>
+    <p class="section-text">この度はギフトをお受け取りいただきありがとうございます。本ギフトは、地域の生産者を応援する取り組みの一環としてお届けしております。下記よりお好みの商品をお選びください。</p>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- ブランドカード -->
+  <div class="brand-card fade-up">
+    <img src="https://picsum.photos/800/400?random=20" class="brand-card-image" alt="北陸建工グループ"
+      style="filter: hue-rotate(200deg) saturate(1.3) brightness(0.82);">
+    <div class="brand-card-body">
+      <div class="brand-card-eyebrow">From</div>
+      <div class="brand-card-title">北陸建工グループより</div>
+      <p class="brand-card-text">富山の豊かな自然と、地元生産者の想いが詰まった一品をお届けします。地域の食文化を次世代へつなぐ取り組みの一環として、このギフトをご用意しました。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 生産者カード -->
+  <div class="brand-card fade-up">
+    <img src="https://picsum.photos/800/400?random=30" class="brand-card-image" alt="カネツル砂子商店"
+      style="filter: hue-rotate(190deg) saturate(1.1) brightness(0.88);">
+    <div class="brand-card-body">
+      <div class="brand-card-eyebrow">Producer Story</div>
+      <div class="brand-card-title">カネツル砂子商店の想い</div>
+      <p class="brand-card-text">私たちは北陸の海と共に歩んできました。素材本来の味を大切にし、ひとつひとつ丁寧に仕上げています。長年培ってきた技と、地域への誇りを込めたギフトをお届けします。</p>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="section-label fade-up">Select Gift</div>
+  <div class="section-title fade-up" style="margin-bottom:4px;">ギフトをお選びください</div>
+  <p class="section-text fade-up" style="margin-bottom:0;"><span style="color:var(--sky);">*</span> いずれか1点をお選びください</p>
+
+  <!-- 商品グリッド（ハードコード） -->
+  <div class="product-grid" id="productGrid">
+
+    <label class="product-card fade-up selected" onclick="selectProduct(this)">
+      <input type="radio" name="selected_product" value="能登の塩と旨味昆布セット" checked>
+      <div class="product-image-wrap">
+        <img src="https://picsum.photos/600/400?random=1" alt="能登の塩と旨味昆布セット">
+        <div class="selected-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+        <span class="product-badge">人気No.1</span>
+      </div>
+      <div class="product-body">
+        <div class="product-name">能登の塩と旨味昆布セット</div>
+        <p class="product-desc">能登半島の清澄な海水から丁寧に結晶させた天然塩と、肉厚な真昆布の詰め合わせ。素材の味を引き立てるシンプルな贈り物です。</p>
+        <span class="product-tag">Noto · Ishikawa</span>
+      </div>
+    </label>
+
+    <label class="product-card fade-up" onclick="selectProduct(this)">
+      <input type="radio" name="selected_product" value="富山湾の白エビ塩辛">
+      <div class="product-image-wrap">
+        <img src="https://picsum.photos/600/400?random=2" alt="富山湾の白エビ塩辛">
+        <div class="selected-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">富山湾の白エビ塩辛</div>
+        <p class="product-desc">「富山湾の宝石」と称される白エビを使った希少な塩辛。ほのかな甘みと深いコクが特徴で、酒の肴にも白ご飯にも合う逸品です。</p>
+        <span class="product-tag">Toyama Bay · Toyama</span>
+      </div>
+    </label>
+
+    <label class="product-card fade-up" onclick="selectProduct(this)">
+      <input type="radio" name="selected_product" value="加賀棒ほうじ茶と和菓子セット">
+      <div class="product-image-wrap">
+        <img src="https://picsum.photos/600/400?random=3" alt="加賀棒ほうじ茶と和菓子セット">
+        <div class="selected-check">
+          <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        </div>
+      </div>
+      <div class="product-body">
+        <div class="product-name">加賀棒ほうじ茶と和菓子セット</div>
+        <p class="product-desc">石川県加賀の茶師が手がける深煎り棒ほうじ茶と、金沢老舗の和菓子をセットに。香ばしい香りとともに、北陸の和の文化をお届けします。</p>
+        <span class="product-tag">Kaga · Ishikawa</span>
+      </div>
+    </label>
+
+  </div>
+
+  <div class="btn-stack">
+    <button type="button" class="btn btn-primary" onclick="showDemoPopup()">
+      次へ進む →
+    </button>
+  </div>
+
+</div>
+
+<!-- ═══ Demo Popup ═══ -->
+<div class="demo-overlay" id="demoOverlay" onclick="closeDemoPopup(event)">
+  <div class="demo-popup">
+    <div class="demo-popup-icon">
+      <svg viewBox="0 0 24 24" fill="none" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="10"/>
+        <line x1="12" y1="8" x2="12" y2="12"/>
+        <line x1="12" y1="16" x2="12.01" y2="16"/>
+      </svg>
+    </div>
+    <div class="demo-popup-title">これはデモページです</div>
+    <p class="demo-popup-text">
+      実際の発注・お届け先の入力は行われません。<br>
+      このページは「こんなギフト体験が作れます」という提案用デモです。
+    </p>
+    <button class="demo-popup-btn" onclick="closeDemoPopup()">わかりました</button>
+    <a href="index.html" class="demo-popup-link">← MAREのHPに戻る</a>
+  </div>
+</div>
+
+<script>
+  const checkSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>`;
+
+  function selectProduct(label) {
+    document.querySelectorAll('.product-card').forEach(c => c.classList.remove('selected'));
+    label.classList.add('selected');
+    label.querySelector('input[type="radio"]').checked = true;
+  }
+
+  function showDemoPopup() {
+    document.getElementById('demoOverlay').classList.add('show');
+  }
+
+  function closeDemoPopup(event) {
+    if (!event || event.target === document.getElementById('demoOverlay')) {
+      document.getElementById('demoOverlay').classList.remove('show');
+    }
+  }
+</script>
+
+</body>
+</html>
