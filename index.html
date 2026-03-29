@@ -550,11 +550,24 @@
       letter-spacing: 1px;
     }
 
-    /* ─── Typography ─── */
-    .hero-title, .section-title, .hero-desc,
+    /* ─── Typography / 禁則処理 ─── */
+    h1, h2, h3, p {
+      word-break: keep-all;
+      overflow-wrap: break-word;
+      line-break: strict;
+    }
+
+    .hero-title {
+      word-break: keep-all;
+      line-break: strict;
+      overflow-wrap: anywhere;
+    }
+
+    .section-title, .hero-desc,
     .section-lead, .service-card-text, .about-point-text {
       word-break: keep-all;
       overflow-wrap: break-word;
+      line-break: strict;
     }
 
     .section-lead p + p { margin-top: 1.2em; }
