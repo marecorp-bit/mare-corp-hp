@@ -131,12 +131,15 @@
 
     .hero-title {
       font-family: 'Shippori Mincho', serif;
-      font-size: clamp(36px, 5vw, 58px);
+      font-size: clamp(2rem, 6vw, 4rem);
       font-weight: 600;
-      color: var(--white);
-      line-height: 1.55;
+      color: #ffffff;
+      line-height: 1.6;
       letter-spacing: 0.06em;
       margin-bottom: 28px;
+      word-break: keep-all;
+      line-break: strict;
+      white-space: normal;
     }
 
     .hero-title span {
@@ -557,21 +560,6 @@
       line-break: strict;
     }
 
-    .hero-title {
-      word-break: keep-all;
-      line-break: strict;
-      overflow-wrap: anywhere;
-    }
-
-    .hero-title-break {
-      display: block;
-      font-size: inherit;
-      font-weight: inherit;
-      color: inherit;
-      letter-spacing: inherit;
-      margin-bottom: 0;
-    }
-
     .section-title, .hero-desc,
     .section-lead, .service-card-text, .about-point-text {
       word-break: keep-all;
@@ -617,8 +605,7 @@
       .hero-actions { flex-direction: column; }
       .btn-primary, .btn-outline { text-align: center; justify-content: center; }
 
-      .hero-title { font-size: 30px; }
-      .hero-title span { font-size: 18px; }
+      .hero-title { font-size: clamp(1.8rem, 8vw, 2.8rem); }
       .hero-desc { font-size: 14px; }
       .section-title { font-size: 22px; }
       .section-lead { font-size: 15px; }
@@ -627,8 +614,6 @@
 
     @media (max-width: 400px) {
       section { padding: 60px 16px; }
-      .hero-title { font-size: 26px; }
-      .hero-title span { font-size: 16px; }
       .section-title { font-size: 18px; }
       .section-title .subtitle { font-size: 15px; }
     }
@@ -673,7 +658,7 @@
 
   <div class="hero-content">
     <p class="hero-eyebrow fade-up">VALUE CONNECTION PLATFORM</p>
-    <h1 class="hero-title fade-up">地域と未来をつなぐ、<span class="hero-title-break">価値の接続点。</span></h1>
+    <h1 class="hero-title fade-up">地域と未来をつなぐ、価値の接続点。</h1>
     <p class="hero-desc fade-up">MAREは、人と人、想いと体験、地域と未来をつなぐ「価値の接続点」です。<br>ギフトカード事業とOEMプラットフォーム事業を通じて、価値と価値をつなぎます。</p>
     <div class="hero-actions fade-up">
       <a href="demo.html" class="btn-primary">
