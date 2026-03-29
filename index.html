@@ -27,6 +27,7 @@
       color: var(--ink);
       background: var(--white);
       -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
     }
 
     /* ─── Nav ─── */
@@ -137,7 +138,6 @@
       line-height: 1.6;
       letter-spacing: 0.06em;
       margin-bottom: 28px;
-      word-break: keep-all;
       line-break: strict;
     }
 
@@ -554,14 +554,12 @@
 
     /* ─── Typography / 禁則処理 ─── */
     h1, h2, h3, p {
-      word-break: keep-all;
       overflow-wrap: break-word;
       line-break: strict;
     }
 
     .section-title, .hero-desc,
     .section-lead, .service-card-text, .about-point-text {
-      word-break: keep-all;
       overflow-wrap: break-word;
       line-break: strict;
     }
