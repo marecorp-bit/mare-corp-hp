@@ -550,6 +550,19 @@
       letter-spacing: 1px;
     }
 
+    /* ─── Typography ─── */
+    .hero-title, .section-title, .hero-desc,
+    .section-lead, .service-card-text, .about-point-text {
+      word-break: keep-all;
+      overflow-wrap: break-word;
+    }
+
+    .section-lead p + p { margin-top: 1.2em; }
+
+    .section-title .subtitle {
+      font-size: inherit;
+    }
+
     /* ─── Responsive ─── */
     @media (max-width: 768px) {
       nav { padding: 16px 20px; }
@@ -587,6 +600,7 @@
       .hero-desc { font-size: 14px; }
       .section-title { font-size: 22px; }
       .section-lead { font-size: 15px; }
+      .section-title .subtitle { font-size: 17px; display: block; margin-top: 4px; }
     }
 
     @media (max-width: 400px) {
@@ -594,6 +608,7 @@
       .hero-title { font-size: 26px; }
       .hero-title span { font-size: 16px; }
       .section-title { font-size: 18px; }
+      .section-title .subtitle { font-size: 15px; }
     }
 
     /* ─── Fade-in animation ─── */
@@ -636,14 +651,8 @@
 
   <div class="hero-content">
     <p class="hero-eyebrow fade-up">VALUE CONNECTION PLATFORM</p>
-    <h1 class="hero-title fade-up">
-      地域と未来をつなぐ、<br>
-      価値の接続点。
-    </h1>
-    <p class="hero-desc fade-up">
-      MAREは、人と人、想いと体験、地域と未来をつなぐ「価値の接続点」です。
-      ギフトカード事業とOEMプラットフォーム事業を通じて、価値と価値をつなぎます。
-    </p>
+    <h1 class="hero-title fade-up">地域と未来をつなぐ、<br>価値の接続点。</h1>
+    <p class="hero-desc fade-up">MAREは、人と人、想いと体験、地域と未来をつなぐ「価値の接続点」です。<br>ギフトカード事業とOEMプラットフォーム事業を通じて、価値と価値をつなぎます。</p>
     <div class="hero-actions fade-up">
       <a href="demo.html" class="btn-primary">
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
@@ -706,9 +715,11 @@
   <div class="section-inner">
     <p class="section-eyebrow fade-up">Service 01</p>
     <h2 class="section-title fade-up">ギフトカード事業<br>― 想いと体験をつなぐ価値の接続点 ―</h2>
-    <p class="section-lead fade-up">
-      私たちのギフトカード事業は、贈る人の想いと、受け取る人の体験、そして提供者の価値をつなぐ仕組みです。単なる贈り物にとどまらず、「どんな時間を届けたいか」という視点から体験や商品を設計し、ギフトとして提供しています。受け取った方は、自分に合った選択ができ、提供者は自らの価値を必要とする人へ自然に届けることができます。ギフトという形を通じて、人と人、人と地域、想いと価値をつなぐ新しい循環を生み出していきます。
-    </p>
+    <div class="section-lead fade-up">
+      <p>私たちのギフトカード事業は、贈る人の想いと、受け取る人の体験、そして提供者の価値をつなぐ仕組みです。</p>
+      <p>単なる贈り物にとどまらず、「どんな時間を届けたいか」という視点から体験や商品を設計し、ギフトとして提供しています。</p>
+      <p>受け取った方は、自分に合った選択ができ、提供者は自らの価値を必要とする人へ自然に届けることができます。ギフトという形を通じて、人と人、人と地域、想いと価値をつなぐ新しい循環を生み出していきます。</p>
+    </div>
     <div class="divider fade-up"></div>
 
     <div class="service-grid">
@@ -747,10 +758,12 @@
 <section class="service service-alt" id="service-oem">
   <div class="section-inner">
     <p class="section-eyebrow fade-up">Service 02</p>
-    <h2 class="section-title fade-up">OEMプラットフォーム事業<br>― 価値をかたちにし、届ける仕組みづくり ―</h2>
-    <p class="section-lead fade-up">
-      OEMプラットフォーム事業では、事業者が持つ商品やアイデアを、最適な形で市場へ届けるための支援を行っています。単なる製造支援ではなく、その商品が持つ背景やストーリーを整理し、市場に適した形へと"編集"することを重視しています。また、ギフトカード事業との連携により、開発された商品や体験を新たな接点へとつなぎ、より多くの顧客へ届けることが可能です。（近日公開予定）
-    </p>
+    <h2 class="section-title fade-up">OEMプラットフォーム事業<br><span class="subtitle">― 価値をかたちにし、届ける仕組みづくり ―</span></h2>
+    <div class="section-lead fade-up">
+      <p>OEMプラットフォーム事業では、事業者が持つ商品やアイデアを、最適な形で市場へ届けるための支援を行っています。</p>
+      <p>単なる製造支援ではなく、その商品が持つ背景やストーリーを整理し、市場に適した形へと"編集"することを重視しています。</p>
+      <p>また、ギフトカード事業との連携により、開発された商品や体験を新たな接点へとつなぎ、より多くの顧客へ届けることが可能です。これにより、事業者は自らの強みに集中しながら、持続的な価値提供と成長を実現できます。（近日公開予定）</p>
+    </div>
     <div class="divider fade-up"></div>
 
     <div class="service-grid">
@@ -809,10 +822,7 @@
     <p class="section-eyebrow fade-up">Contact</p>
     <h2 class="section-title fade-up">お問い合わせ</h2>
     <div class="divider fade-up"></div>
-    <p class="section-lead fade-up">
-      サービスに関するご質問・ご相談・お見積もりは、<br>
-      下記フォームよりお気軽にご連絡ください。
-    </p>
+    <p class="section-lead fade-up">サービスに関するご質問・ご相談・お見積もりは、<br>下記フォームよりお気軽にご連絡ください。</p>
     <div class="contact-box fade-up">
       <a href="https://docs.google.com/forms/d/e/1FAIpQLSeMhlQkFVUytD8UYxsfwPngYTdQ1wj4fDfEeiPfBqGWtVUaCQ/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer" class="contact-email">お問い合わせフォームを開く →</a>
       <p class="contact-note">
