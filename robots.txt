@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://mare-corp-hp.mare-corp-info.workers.dev/sitemap.xml
