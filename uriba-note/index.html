@@ -1,0 +1,635 @@
+<!doctype html><html lang="ja"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>売場ノート｜売場の記録を、売上を伸ばす力に。</title>
+<meta name="description" content="道の駅・サービスエリア向けの販売実績の見える化・補充支援アプリ。補充前の数と補充した数を記録するだけで、販売数・売上・週のレポート・次回のおすすめ補充数が分かります。">
+<meta name="theme-color" content="#1d8aa3">
+<meta property="og:type" content="website"><meta property="og:title" content="売場ノート｜売場の記録を、売上を伸ばす力に。"><meta property="og:description" content="補充の記録から、販売数・売上・次回のおすすめ補充数まで。道の駅・サービスエリア向けアプリ。">
+<meta property="og:url" content="https://mare-corp-hp.mare-corp-info.workers.dev/uriba-note/"><meta property="og:image" content="https://mare-corp-hp.mare-corp-info.workers.dev/assets/uriba/rec.webp">
+<link rel="canonical" href="https://mare-corp-hp.mare-corp-info.workers.dev/uriba-note/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Murecho:wght@400;600;800;900&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=IBM+Plex+Mono:wght@500&display=swap">
+<style>
+/* 白地に濃紺。アプリと同じ青緑を一点のアクセントに。実画面のスマホを主役に、補充の流れを動きで見せる縦長LP */
+:root{
+  --bg:#f6f8fa; --paper:#ffffff; --ink:#0c1a2b; --soft:#56677a; --rule:#dfe5eb;
+  --navy:#0f2742; --teal:#1d8aa3; --teal-2:#6cc3d6; --teal-bg:#e3f2f6; --warn:#d0533a;
+  --band:#0b1b2e; --band-ink:#e8f0f6; --band-soft:#93a7b8; --band-rule:#22384f;
+  --f-disp:"Murecho","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Noto Sans JP",system-ui,sans-serif;
+  --f-mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --shadow:0 30px 60px -20px rgba(12,26,43,.35),0 12px 24px -12px rgba(12,26,43,.25);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#0a121b; --paper:#111c27; --ink:#e8eff5; --soft:#94a6b6; --rule:#223242;
+  --navy:#cfe3f2; --teal:#6cc3d6; --teal-2:#8fd6e5; --teal-bg:#14303a; --warn:#ff8a73;
+  --band:#060d15; --band-ink:#e8f0f6; --band-soft:#93a7b8; --band-rule:#1c2f42;
+  --shadow:0 30px 60px -20px rgba(0,0,0,.7),0 12px 24px -12px rgba(0,0,0,.6); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#0a121b; --paper:#111c27; --ink:#e8eff5; --soft:#94a6b6; --rule:#223242;
+  --navy:#cfe3f2; --teal:#6cc3d6; --teal-2:#8fd6e5; --teal-bg:#14303a; --warn:#ff8a73;
+  --band:#060d15; --band-ink:#e8f0f6; --band-soft:#93a7b8; --band-rule:#1c2f42;
+  --shadow:0 30px 60px -20px rgba(0,0,0,.7),0 12px 24px -12px rgba(0,0,0,.6); color-scheme:dark}
+
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+img{max-width:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:16px;line-height:1.8;-webkit-font-smoothing:antialiased;overflow-x:hidden}
+.w{max-width:1120px;margin:0 auto;padding-left:max(20px,env(safe-area-inset-left,0px));padding-right:max(20px,env(safe-area-inset-right,0px))}
+section{padding-block:clamp(72px,10vw,128px)}
+h1,h2,h3{font-family:var(--f-disp);margin:0;text-wrap:balance;letter-spacing:.01em}
+h2{font-size:clamp(1.7rem,4.2vw,2.8rem);font-weight:900;line-height:1.3}
+h3{font-size:1.15rem;font-weight:800;line-height:1.45}
+p{margin:0}
+.eyebrow{font-family:var(--f-mono);font-size:.78rem;letter-spacing:.14em;color:var(--teal);text-transform:uppercase}
+.lead{color:var(--soft);font-size:1.05rem;max-width:36em}
+.head{display:grid;gap:14px;margin-bottom:clamp(36px,6vw,64px)}
+.num{font-variant-numeric:tabular-nums}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--teal);outline-offset:3px;border-radius:6px}
+
+/* ---------- phone ---------- */
+.phone{position:relative;width:100%;max-width:300px;border-radius:38px;padding:9px;background:linear-gradient(145deg,#f4f6f8,#c9d0d7 45%,#eef1f4 70%,#b7c0c9);box-shadow:var(--shadow);}
+.phone::after{content:"";position:absolute;inset:0;border-radius:38px;box-shadow:inset 0 0 0 1px rgba(12,26,43,.18),inset 0 0 0 3px rgba(255,255,255,.7);pointer-events:none}
+.screen{position:relative;border-radius:30px;overflow:hidden;background:#ffffff;aspect-ratio:720/1320;box-shadow:inset 0 0 0 1px rgba(12,26,43,.08)}
+.screen img{position:absolute;inset:0;width:100%;height:auto;display:block;transition:opacity .7s ease}
+.screen img.off{opacity:0}
+.hl{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);border:2px solid #1d8aa3;border-radius:10px;background:rgba(29,138,163,.06);box-shadow:0 0 16px rgba(29,138,163,.35);transition:all .6s cubic-bezier(.2,.8,.2,1);pointer-events:none}
+.hl.warn{border-color:#d0533a;background:rgba(208,83,58,.06);box-shadow:0 0 16px rgba(208,83,58,.35)}
+.pin{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border-radius:50%;background:#1d8aa3;color:#fff;font:800 .8rem/26px var(--f-disp);text-align:center;box-shadow:0 0 0 0 rgba(108,195,214,.6);animation:ping 2.4s infinite}
+.pin.warn{background:#d0533a;color:#fff;animation-name:pingw}
+@keyframes ping{0%{box-shadow:0 0 0 0 rgba(108,195,214,.65)}70%{box-shadow:0 0 0 14px rgba(108,195,214,0)}100%{box-shadow:0 0 0 0 rgba(108,195,214,0)}}
+@keyframes pingw{0%{box-shadow:0 0 0 0 rgba(255,138,115,.65)}70%{box-shadow:0 0 0 14px rgba(255,138,115,0)}100%{box-shadow:0 0 0 0 rgba(255,138,115,0)}}
+
+/* ---------- nav ---------- */
+.nav{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-bottom:1px solid var(--rule)}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:21;background:var(--bg)}
+.nav .w{display:flex;align-items:center;gap:20px;height:60px}
+.logo{display:flex;align-items:center;gap:10px;font-family:var(--f-disp);font-weight:900;font-size:1.12rem;text-decoration:none}
+.logo i{width:26px;height:26px;border-radius:8px;background:var(--teal);display:grid;place-items:center}
+.logo i svg{width:15px;height:15px}
+.logo small{font:500 .7rem var(--f-mono);color:var(--soft);letter-spacing:.1em}
+.nav ul{display:flex;gap:22px;list-style:none;margin:0 0 0 auto;padding:0;font-size:.88rem;color:var(--soft)}
+.nav ul a{text-decoration:none}.nav ul a:hover{color:var(--ink)}
+.btn{display:inline-flex;align-items:center;gap:8px;border-radius:999px;padding:12px 22px;font-weight:700;font-size:.95rem;text-decoration:none;transition:transform .2s,background .2s,box-shadow .2s;white-space:nowrap}
+.btn.pri{background:var(--navy);color:var(--paper)}
+.btn.pri:hover{transform:translateY(-2px);box-shadow:0 10px 24px -10px var(--navy)}
+.btn.ghost{border:1.5px solid var(--rule);color:var(--ink)}
+.btn.ghost:hover{border-color:var(--teal);color:var(--teal)}
+.nav .btn{padding:8px 16px;font-size:.85rem}
+@media (max-width:820px){.nav ul{display:none}.nav .btn{margin-left:auto}}
+
+/* ---------- hero ---------- */
+.hero{position:relative;padding-block:clamp(48px,7vw,96px) clamp(64px,8vw,110px);overflow:hidden}
+.grid-bg{position:absolute;inset:0;background-image:linear-gradient(var(--rule) 1px,transparent 1px),linear-gradient(90deg,var(--rule) 1px,transparent 1px);background-size:44px 44px;mask-image:radial-gradient(ellipse 70% 60% at 70% 40%,#000 20%,transparent 75%);-webkit-mask-image:radial-gradient(ellipse 70% 60% at 70% 40%,#000 20%,transparent 75%);opacity:.7}
+.glow{position:absolute;width:620px;height:620px;right:-120px;top:-80px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--teal) 30%,transparent),transparent 65%);filter:blur(10px);animation:drift 14s ease-in-out infinite alternate}
+@keyframes drift{to{transform:translate(-80px,60px) scale(1.1)}}
+.hero .w{position:relative;display:grid;grid-template-columns:1.05fr 1fr;gap:40px;align-items:center}
+.hero h1{font-size:clamp(1.9rem,4.4vw,3.4rem);font-weight:900;line-height:1.18;letter-spacing:-.005em;margin-block:18px 22px}
+.hero h1 .ln{display:block;white-space:nowrap}
+.hero h1 .ac{background:linear-gradient(90deg,var(--teal),var(--navy) 90%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero .lead{font-size:1.08rem}
+.hero .lead b{color:var(--ink)}
+.cta-row{display:flex;flex-wrap:wrap;gap:12px;margin-top:30px}
+.tags{display:flex;flex-wrap:wrap;gap:8px;margin-top:26px}
+.tags span{font-size:.78rem;border:1px solid var(--rule);background:var(--paper);border-radius:999px;padding:4px 12px;color:var(--soft)}
+.stage{position:relative;height:clamp(500px,58vw,640px);display:grid;place-items:center}
+.stage .phone{position:absolute;transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.stage .p-main{z-index:3;max-width:280px;animation:float 7s ease-in-out infinite}
+.stage .p-l{z-index:1;max-width:220px;transform:translate(-62%,6%) rotate(-8deg);opacity:.92}
+.stage .p-r{z-index:2;max-width:220px;transform:translate(62%,10%) rotate(7deg);opacity:.92}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.chip{position:absolute;z-index:4;display:flex;align-items:center;gap:10px;background:var(--paper);border:1px solid var(--rule);border-radius:16px;padding:10px 14px;box-shadow:0 18px 40px -18px rgba(12,26,43,.4);font-size:.8rem;line-height:1.35;color:var(--soft);animation:float 6s ease-in-out infinite}
+.chip b{display:block;font-family:var(--f-disp);font-size:1.25rem;color:var(--ink);font-weight:900}
+.chip .dot{width:9px;height:9px;border-radius:50%;background:var(--teal);box-shadow:0 0 0 4px var(--teal-bg)}
+.c1{left:2%;top:16%;animation-delay:-1s}.c2{right:0;top:44%;animation-delay:-3s}.c3{left:6%;bottom:10%;animation-delay:-2s}
+.screen-label{position:absolute;z-index:5;left:50%;bottom:-6px;transform:translateX(-50%);font:500 .72rem var(--f-mono);letter-spacing:.08em;color:var(--soft);background:var(--paper);border:1px solid var(--rule);border-radius:999px;padding:4px 12px;white-space:nowrap}
+.screen-label i{display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--teal);margin-right:6px;vertical-align:1px;animation:blink 1.6s infinite}
+@keyframes blink{50%{opacity:.25}}
+@media (max-width:900px){.hero .w{grid-template-columns:1fr}.stage{height:560px}}
+@media (max-width:480px){.stage{height:500px}.stage .p-main{max-width:230px}.stage .p-l,.stage .p-r{max-width:170px}.chip{font-size:.72rem;padding:8px 10px}.chip b{font-size:1.05rem}.c2{right:-4px}}
+
+/* ---------- problems ---------- */
+.probs{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:16px}
+.prob{background:var(--paper);border:1px solid var(--rule);border-radius:20px;padding:24px 22px;display:grid;gap:14px;align-content:start;transition:transform .3s,border-color .3s}
+.prob:hover{transform:translateY(-4px);border-color:var(--teal)}
+.prob svg{width:40px;height:40px;color:var(--teal)}
+.prob p{color:var(--soft);font-size:.92rem}
+@media (max-width:900px){.probs{grid-template-columns:1fr 1fr}}
+@media (max-width:520px){.probs{grid-template-columns:1fr}}
+
+/* ---------- before / after flow ---------- */
+.compare{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.lane{border-radius:24px;padding:28px 24px;display:grid;gap:20px;align-content:start;min-width:0}
+.lane.before{background:var(--paper);border:1px dashed var(--rule)}
+.lane.after{background:var(--teal-bg);border:1px solid color-mix(in srgb,var(--teal) 40%,transparent)}
+.lane h3 small{display:block;font:500 .72rem var(--f-mono);letter-spacing:.12em;color:var(--soft);margin-bottom:4px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.node{border-radius:12px;padding:9px 14px;font-weight:700;font-size:.9rem;background:var(--bg);border:1px solid var(--rule)}
+.after .node{background:var(--paper);border-color:transparent}
+.after .node.key{background:var(--teal);color:var(--paper)}
+.arr{color:var(--soft);font-size:.9rem}
+.end{color:var(--soft);font-size:.85rem;border:1px dashed var(--rule);border-radius:12px;padding:9px 14px;opacity:.75}
+.loop{display:flex;align-items:center;gap:10px;font-size:.88rem;color:var(--teal);font-weight:700}
+.loop svg{width:34px;height:34px;animation:spin 6s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.lane .say{font-size:.9rem;color:var(--soft)}
+.punch{margin-top:28px;font-family:var(--f-disp);font-weight:800;font-size:clamp(1.15rem,2.6vw,1.5rem);text-align:center}
+.punch em{font-style:normal;color:var(--teal)}
+@media (max-width:760px){.compare{grid-template-columns:1fr}}
+
+/* ---------- steps (scrolly) ---------- */
+.steps-wrap{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:60px;align-items:start}
+.steplist{display:grid;gap:0}
+.step{padding-block:40px;border-top:1px solid var(--rule);display:grid;gap:12px;opacity:.38;transition:opacity .5s}
+.step:first-child{border-top:0}
+.step.on{opacity:1}
+.step .sn{font:500 .78rem var(--f-mono);color:var(--teal);letter-spacing:.14em}
+.step h3{font-size:clamp(1.25rem,2.6vw,1.6rem)}
+.step p{color:var(--soft);max-width:30em}
+.step ul{margin:4px 0 0;padding-left:1.1em;color:var(--soft);font-size:.92rem}
+.step .mfig{display:none}
+.sticky{position:sticky;top:120px;display:grid;justify-items:center;gap:14px}
+.sticky .phone{max-width:300px}
+.dots{display:flex;gap:6px}.dots i{width:22px;height:4px;border-radius:2px;background:var(--rule);transition:background .4s}.dots i.on{background:var(--teal)}
+@media (max-width:900px){
+  .steps-wrap{grid-template-columns:1fr}.sticky{display:none}.step{opacity:1}
+  .step .mfig{display:block;margin-top:14px;justify-self:center;width:100%;max-width:260px}
+}
+
+/* ---------- report gallery ---------- */
+.gal{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:22px}
+.card{display:grid;gap:16px;align-content:start;justify-items:center;min-width:0}
+.card .phone{max-width:250px}
+.card .cap{display:grid;gap:6px;width:100%;max-width:260px}
+.card .cap b{font-family:var(--f-disp);font-size:1.02rem}
+.card .cap span{font-size:.86rem;color:var(--soft);line-height:1.65}
+.card .q{font:500 .72rem var(--f-mono);color:var(--teal);letter-spacing:.08em}
+@media (max-width:1000px){.gal{grid-template-columns:1fr 1fr;row-gap:44px}}
+@media (max-width:520px){.gal{grid-template-columns:1fr}}
+
+/* ---------- recommend ---------- */
+.rec{display:grid;grid-template-columns:1fr 1fr;gap:48px;align-items:center}
+.balance{position:relative;background:var(--paper);border:1px solid var(--rule);border-radius:28px;padding:34px 26px;display:grid;gap:18px}
+.src{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;border-radius:16px;padding:14px 16px;background:var(--bg)}
+.src svg{width:34px;height:34px;color:var(--teal)}
+.src b{display:block;font-family:var(--f-disp)}
+.src span{font-size:.84rem;color:var(--soft)}
+.merge{display:grid;place-items:center;height:46px;position:relative}
+.merge::before{content:"";position:absolute;top:0;bottom:0;width:2px;background:linear-gradient(var(--teal),transparent);}
+.merge i{position:absolute;width:8px;height:8px;border-radius:50%;background:var(--teal);animation:fall 1.8s linear infinite}
+.merge i:nth-child(2){animation-delay:.6s}.merge i:nth-child(3){animation-delay:1.2s}
+@keyframes fall{from{transform:translateY(-22px);opacity:0}30%{opacity:1}to{transform:translateY(22px);opacity:0}}
+.decide{border-radius:16px;padding:18px;background:var(--navy);color:var(--paper);text-align:center;font-family:var(--f-disp);font-weight:800}
+.decide small{display:block;font:400 .78rem var(--f-body);opacity:.75;margin-top:4px}
+.note{font-size:.8rem;color:var(--soft)}
+.rec{align-items:start}
+.rec-phone{position:sticky;top:110px;display:grid;justify-items:center;gap:16px}
+.rec-phone .phone{max-width:320px}
+.tagline{font-size:.86rem;color:var(--soft);line-height:2}
+.pin-s{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:var(--teal);color:var(--paper);font:800 .7rem var(--f-disp);margin-right:8px;vertical-align:1px}
+.readout{background:var(--paper);border:1px solid var(--rule);border-radius:20px;padding:20px 22px;display:grid;gap:10px}
+.ro-h{font:500 .74rem var(--f-mono);letter-spacing:.08em;color:var(--soft)}
+.ro-row{display:flex;flex-wrap:wrap;align-items:baseline;gap:4px 8px;font-size:.92rem;color:var(--soft)}
+.ro-row b{font-family:var(--f-disp);font-size:1.3rem;color:var(--ink)}
+.ro-rec{border-top:1px dashed var(--rule);padding-top:12px;color:var(--ink);font-weight:700}
+.ro-rec b{font-size:2rem;color:var(--teal)}
+.ro-rec em{font-style:normal;font-size:.78rem;color:var(--warn);border:1.5px solid var(--warn);border-radius:999px;padding:0 8px}
+@media (max-width:820px){.rec{grid-template-columns:1fr}.rec-phone{position:static}}
+
+/* ---------- case ---------- */
+.case{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:center}
+.big{font-family:var(--f-disp);font-weight:900;font-size:clamp(3.6rem,11vw,7rem);line-height:1;letter-spacing:-.02em;color:var(--teal)}
+.big small{font-size:.32em;color:var(--ink);margin-left:.15em}
+.bars{display:grid;gap:18px;background:var(--paper);border:1px solid var(--rule);border-radius:24px;padding:28px 24px}
+.bar{display:grid;grid-template-columns:4.2em 1fr;gap:12px;align-items:center;font-size:.9rem}
+.track{position:relative;height:30px;border-radius:8px;background:var(--bg)}
+.fill{position:absolute;left:0;top:0;bottom:0;border-radius:8px;background:var(--soft);width:20%}
+.range{position:absolute;top:0;bottom:0;left:0;border-radius:8px;background:var(--teal);width:60%;transform-origin:left;animation:grow 2.4s cubic-bezier(.2,.8,.2,1) both}
+.range::after{content:"";position:absolute;left:60%;right:-66.7%;top:0;bottom:0;border-radius:0 8px 8px 0;background:repeating-linear-gradient(45deg,var(--teal) 0 6px,transparent 6px 12px);opacity:.55}
+@keyframes grow{from{transform:scaleX(.33)}to{transform:scaleX(1)}}
+.scale{display:grid;grid-template-columns:4.2em 1fr;gap:12px;font:500 .72rem var(--f-mono);color:var(--soft)}
+.scale div{display:flex;justify-content:space-between}
+@media (max-width:820px){.case{grid-template-columns:1fr}}
+
+/* ---------- link band ---------- */
+.band{background:var(--band);color:var(--band-ink);position:relative;overflow:hidden}
+.band .lead{color:var(--band-soft)}
+.band .eyebrow{color:#6cc3d6}
+.link{display:grid;grid-template-columns:1fr 120px 1fr;gap:0;align-items:stretch;margin-top:20px}
+.sys{border:1px solid var(--band-rule);border-radius:24px;padding:26px 22px;background:rgba(255,255,255,.02);display:grid;gap:16px;align-content:start}
+.sys .nm{display:flex;align-items:baseline;gap:10px;font-family:var(--f-disp);font-weight:900;font-size:1.4rem}
+.sys .nm small{font:500 .72rem var(--f-mono);color:var(--band-soft);letter-spacing:.1em}
+.chain{display:grid;gap:8px}
+.lk{display:flex;align-items:center;gap:12px;border-radius:12px;padding:11px 14px;background:rgba(255,255,255,.04);border:1px solid var(--band-rule);font-weight:700;font-size:.92rem}
+.lk span{font-weight:400;color:var(--band-soft);font-size:.8rem;margin-left:auto}
+.lk i{width:8px;height:8px;border-radius:50%;background:#6cc3d6;flex:none}
+.sys.us .lk i{background:#f0b45a}
+.pipe{position:relative;display:grid;place-items:center}
+.pipe svg{width:100%;height:100%;min-height:200px;overflow:visible}
+.pipe .lbl{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);font:500 .68rem var(--f-mono);color:#6cc3d6;background:var(--band);padding:3px 6px;letter-spacing:.1em;white-space:nowrap}
+.flowline{stroke-dasharray:6 10;animation:dash 1.4s linear infinite}
+@keyframes dash{to{stroke-dashoffset:-32}}
+.back{margin-top:26px;display:flex;align-items:center;gap:14px;border:1px dashed var(--band-rule);border-radius:16px;padding:14px 18px;color:var(--band-soft);font-size:.92rem}
+.back svg{width:40px;height:22px;flex:none}
+.back b{color:var(--band-ink)}
+.gains{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px;margin-top:34px}
+.gains div{border-top:1px solid var(--band-rule);padding-top:14px;display:grid;gap:6px}
+.gains b{font-family:var(--f-disp);font-size:1.02rem}
+.gains span{font-size:.86rem;color:var(--band-soft)}
+@media (max-width:860px){.link{grid-template-columns:1fr}.pipe{height:90px}.pipe svg{min-height:0;transform:rotate(90deg);width:90px}.gains{grid-template-columns:1fr}}
+
+/* ---------- pricing ---------- */
+.plans{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:18px;align-items:stretch}
+.plan{position:relative;background:var(--paper);border:1px solid var(--rule);border-radius:24px;padding:28px 24px;display:grid;gap:16px;align-content:start}
+.plan.hot{border:2px solid var(--teal);box-shadow:0 30px 60px -30px color-mix(in srgb,var(--teal) 60%,transparent)}
+.plan .badge{position:absolute;top:-13px;left:24px;background:var(--teal);color:var(--paper);font-size:.74rem;font-weight:700;border-radius:999px;padding:3px 12px}
+.plan .badge.alt{background:var(--navy)}
+.plan h3 small{display:block;font:400 .82rem var(--f-body);color:var(--soft);margin-top:2px}
+.price{font-family:var(--f-disp);font-weight:900;font-size:2.3rem;line-height:1.1}
+.price small{font-size:.9rem;font-weight:600;color:var(--soft);margin-left:4px}
+.init{font-size:.86rem;color:var(--soft);margin-top:-8px}
+.plan ul{list-style:none;margin:0;padding:0;display:grid;gap:9px;font-size:.9rem}
+.plan li{display:grid;grid-template-columns:18px 1fr;gap:8px;align-items:start}
+.plan li svg{width:16px;height:16px;margin-top:5px;color:var(--teal)}
+.plan li span small{display:block;color:var(--soft);font-size:.8rem}
+.common{margin-top:22px;font-size:.86rem;color:var(--soft);display:grid;gap:4px}
+@media (max-width:900px){.plans{grid-template-columns:1fr}}
+
+/* ---------- final cta ---------- */
+.final{text-align:center;display:grid;gap:22px;justify-items:center}
+.final h2{max-width:20em}
+.final .cta-row{justify-content:center;margin-top:6px}
+.url{font:500 .82rem var(--f-mono);color:var(--soft);word-break:break-all}
+footer{border-top:1px solid var(--rule);padding-block:28px;font-size:.8rem;color:var(--soft)}
+footer .w{display:flex;flex-wrap:wrap;gap:12px;justify-content:space-between}
+
+/* ---------- reveal (visible at rest) ---------- */
+.rv{transition:transform .9s cubic-bezier(.2,.8,.2,1)}
+.js .rv:not(.in){transform:translateY(26px)}
+@media (prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation:none!important;transition:none!important}
+  .js .rv:not(.in){transform:none}
+}
+</style></head><body>
+
+<nav class="nav" aria-label="ページ内">
+  <div class="w">
+    <a class="logo" href="/uriba-note/"><i><svg viewBox="0 0 16 16" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round"><path d="M3 12V7M8 12V4M13 12V9"/></svg></i>売場ノート <small>by MARE</small></a>
+    <ul>
+      <li><a href="#how">使い方</a></li>
+      <li><a href="#report">分かること</a></li>
+      <li><a href="#case">事例</a></li>
+      <li><a href="#tanaroku">タナロク連動</a></li>
+      <li><a href="#price">料金</a></li>
+      <li><a href="/">MARE</a></li>
+    </ul>
+    <a class="btn pri" href="#contact">デモを相談する</a>
+  </div>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="top">
+  <div class="grid-bg" aria-hidden="true"></div>
+  <div class="glow" aria-hidden="true"></div>
+  <div class="w">
+    <div>
+      <span class="eyebrow">For roadside stations &amp; service areas</span>
+      <h1><span class="ln">売場の記録を、</span><span class="ln ac">売上を伸ばす力に。</span></h1>
+      <p class="lead">道の駅・サービスエリア向けの、販売実績の見える化・補充支援アプリ。売場で入れるのは<b>「補充前の数」と「補充した数」</b>だけ。販売数・売上・週のレポートは、売場ノートが出します。</p>
+      <div class="cta-row">
+        <a class="btn pri" href="#contact">デモを相談する</a>
+        <a class="btn ghost" href="#how">使い方を見る ↓</a>
+      </div>
+      <div class="tags"><span>スマホで記録</span><span>販売数・売上を自動計算</span><span>週のレポート</span><span>前週比・前年比</span><span>おすすめ補充数</span></div>
+    </div>
+    <div class="stage" aria-label="売場ノートの実際の画面（デモ売場）">
+      <div class="phone p-l"><div class="screen"><img src="/assets/uriba/item.webp" data-shot="item" width="720" height="1320" loading="lazy" decoding="async" alt="商品別の構成比の画面"></div></div>
+      <div class="phone p-r"><div class="screen"><img src="/assets/uriba/note.webp" data-shot="note" width="720" height="1231" loading="lazy" decoding="async" alt="ノートの画面。日付ごとの補充後の数"></div></div>
+      <div class="phone p-main"><div class="screen" id="heroScreen">
+        <img src="/assets/uriba/rec.webp" data-shot="rec" width="720" height="1231" decoding="async" alt="記録の画面。次回のおすすめ補充数が出ている">
+        <img src="/assets/uriba/note.webp" data-shot="note" width="720" height="1231" loading="lazy" decoding="async" class="off" alt="">
+        <img src="/assets/uriba/week.webp" data-shot="week" width="720" height="1320" loading="lazy" decoding="async" class="off" alt="">
+        <img src="/assets/uriba/month.webp" data-shot="month" width="720" height="1231" loading="lazy" decoding="async" class="off" alt="">
+      </div></div>
+      <div class="chip c1"><span class="dot"></span><div>週の売上<b class="num">¥78,550</b></div></div>
+      <div class="chip c2"><span class="dot"></span><div>目標比<b class="num">102%</b></div></div>
+      <div class="chip c3"><span class="dot"></span><div>前週比<b class="num">103%</b></div></div>
+      <span class="screen-label"><i></i><span id="heroLabel">記録とおすすめ</span>｜デモ売場の実際の画面</span>
+    </div>
+  </div>
+</header>
+
+<!-- PROBLEMS -->
+<section id="problem">
+  <div class="w">
+    <div class="head rv">
+      <span class="eyebrow">Problems</span>
+      <h2>売場を回るたびに、<br>こんなことはありませんか？</h2>
+    </div>
+    <div class="probs">
+      <div class="prob rv"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="6" y="10" width="28" height="22" rx="3"/><path d="M6 18h28M13 25h4M23 25h4"/><path d="M30 6l-4 4M10 6l4 4"/></svg><h3>連休や繁忙日に、売り切れてしまう</h3><p>棚が空いていた時間に、売れたはずの分を逃しているかもしれません。</p></div>
+      <div class="prob rv"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 33V14l7-6 7 6v19M20 33V18l7-6 7 6v15M6 33h28"/><circle cx="13" cy="20" r="1.5"/><path d="M26 22h2"/></svg><h3>売場ごとの売れ方が分からない</h3><p>どの売場で、何が、どれだけ売れているのかが見えていない。</p></div>
+      <div class="prob rv"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="20" cy="13" r="6"/><path d="M9 33c1.5-6 6-9 11-9s9.5 3 11 9"/><path d="M29 6c2 1 3 3 3 5"/></svg><h3>補充量は担当者の経験だのみ</h3><p>次に何個持っていくかが、人によって違う。休めば分からなくなる。</p></div>
+      <div class="prob rv"><svg viewBox="0 0 40 40" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 6h16l6 6v22H10z"/><path d="M26 6v6h6M15 19h12M15 25h8"/></svg><h3>記録はあるのに、使えていない</h3><p>手帳には毎回書いている。でも、売上を伸ばす判断には生かせていない。</p></div>
+    </div>
+  </div>
+</section>
+
+<!-- BEFORE / AFTER -->
+<section style="padding-top:0">
+  <div class="w">
+    <div class="head rv">
+      <span class="eyebrow">Before / After</span>
+      <h2>補充しているのに、<br>販売実績が見えていない？</h2>
+    </div>
+    <div class="compare">
+      <div class="lane before rv">
+        <h3><small>いま</small>記録は、書いたところで止まっている</h3>
+        <div class="flow"><span class="node">棚を確認</span><span class="arr">→</span><span class="node">補充する</span><span class="arr">→</span><span class="node">手帳に書く</span><span class="arr">→</span><span class="end">そのまま</span></div>
+        <p class="say">売れた数や売上を出すには、あとから手で計算が必要です。</p>
+      </div>
+      <div class="lane after rv">
+        <h3><small>売場ノート</small>記録が、次の補充につながる</h3>
+        <div class="flow"><span class="node">棚を確認</span><span class="arr">→</span><span class="node">補充する</span><span class="arr">→</span><span class="node">スマホで記録</span><span class="arr">→</span><span class="node key">販売数・売上</span></div>
+        <div class="loop"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><path d="M27 12a11 11 0 1 0 1 9"/><path d="M28 5v7h-7"/></svg>次の補充の判断へ</div>
+      </div>
+    </div>
+    <p class="punch rv">記録を残すだけで終わらせず、<em>次の補充判断に活かす。</em></p>
+  </div>
+</section>
+
+<!-- HOW -->
+<section id="how" style="background:var(--paper);border-block:1px solid var(--rule)">
+  <div class="w">
+    <div class="head rv">
+      <span class="eyebrow">How it works</span>
+      <h2>売場で、いつもの補充を<br>スマホに記録するだけ。</h2>
+    </div>
+    <div class="steps-wrap">
+      <div class="steplist">
+        <article class="step on" data-i="0">
+          <span class="sn">STEP 01</span>
+          <h3>補充前の数を入れる</h3>
+          <p>売場に着いたら、棚に残っている数を「補充前」に入れます。前回の補充後の数も、横に表示されています。</p>
+          <div class="mfig"><div class="phone"><div class="screen"><img src="/assets/uriba/record.webp" data-shot="record" width="720" height="1231" loading="lazy" decoding="async" alt="記録画面の補充前の欄"><div class="hl" style="--x:6%;--y:27.5%;--w:43%;--h:7.5%"></div><span class="pin" style="left:8%;top:27.5%">1</span><div class="hl" style="--x:53%;--y:20.5%;--w:41%;--h:5.1%"></div></div></div></div>
+        </article>
+        <article class="step" data-i="1">
+          <span class="sn">STEP 02</span>
+          <h3>補充した数を入れると、その場で結果が出る</h3>
+          <p>持ち込んだ数を「補充」に入れると、すぐ下に補充後の数・販売数・売上と、次回のおすすめ補充数が出ます。確かめたら「この内容で記録する」を押します。</p>
+          <div class="mfig"><div class="phone"><div class="screen"><img src="/assets/uriba/rec.webp" data-shot="rec" width="720" height="1231" loading="lazy" decoding="async" alt="記録画面。補充前10・補充2を入れると、補充後12・販売8個・次回のおすすめ5が出る"><div class="hl" style="--x:6%;--y:31.9%;--w:44.5%;--h:3.9%"></div><div class="hl" style="--x:52%;--y:31.9%;--w:37%;--h:3.9%"></div><span class="pin" style="left:93%;top:33.85%">2</span></div></div></div>
+        </article>
+        <article class="step" data-i="2">
+          <span class="sn">STEP 03</span>
+          <h3>販売数・売上を確かめる</h3>
+          <p>記録は日付ごとに「ノート」にたまります。「補充後」「補充前」「販売数」を切り替えて、商品ごとの動きを一覧で見られます。</p>
+          <div class="mfig"><div class="phone"><div class="screen"><img src="/assets/uriba/note.webp" data-shot="note" width="720" height="1231" loading="lazy" decoding="async" alt="ノート画面"><div class="hl" style="--x:4%;--y:13.4%;--w:71%;--h:6.9%"></div><span class="pin" style="left:6%;top:13.4%">3</span></div></div></div>
+        </article>
+        <article class="step" data-i="3">
+          <span class="sn">STEP 04</span>
+          <h3>次の補充の判断に使う</h3>
+          <p>「売上」では、週の売上・目標比・前週比を日別、部門別、商品別に確認できます。どこを見直すかを、数字で決められます。</p>
+          <div class="mfig"><div class="phone"><div class="screen"><img src="/assets/uriba/week.webp" data-shot="week" width="720" height="1320" loading="lazy" decoding="async" alt="週のレポート画面"><div class="hl" style="--x:27%;--y:18.6%;--w:35%;--h:6%"></div><span class="pin" style="left:29%;top:18.6%">4</span><div class="hl" style="--x:68%;--y:84.4%;--w:14%;--h:4.6%"></div></div></div></div>
+        </article>
+      </div>
+      <div class="sticky" aria-hidden="true">
+        <div class="phone"><div class="screen" id="stScreen">
+          <img src="/assets/uriba/record.webp" data-shot="record" width="720" height="1231" loading="lazy" decoding="async"><img src="/assets/uriba/note.webp" data-shot="note" width="720" height="1231" loading="lazy" decoding="async" class="off"><img src="/assets/uriba/week.webp" data-shot="week" width="720" height="1320" loading="lazy" decoding="async" class="off"><img src="/assets/uriba/rec.webp" data-shot="rec" width="720" height="1231" loading="lazy" decoding="async" class="off">
+          <div class="hl" id="stHl1"></div><div class="hl" id="stHl2"></div><span class="pin" id="stPin">1</span>
+        </div></div>
+        <div class="dots" id="stDots"><i class="on"></i><i></i><i></i><i></i></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- REPORT -->
+<section id="report">
+  <div class="w">
+    <div class="head rv">
+      <span class="eyebrow">Weekly report</span>
+      <h2>売場の状況が、数字で分かる。</h2>
+      <p class="lead">記録から、週のレポートが自動でできます。売場を切り替えれば、売場ごとに見比べられます。</p>
+    </div>
+    <div class="gal">
+      <div class="card rv">
+        <div class="phone"><div class="screen"><img src="/assets/uriba/month.webp" data-shot="month" width="720" height="1231" loading="lazy" decoding="async" alt="今月の実績・目標・見通し"><div class="hl" style="--x:6%;--y:16.2%;--w:88%;--h:14.9%"></div><span class="pin" style="left:8%;top:16.2%">1</span></div></div>
+        <div class="cap"><span class="q">目標比・見通し</span><b>今月、目標に届きそうか</b><span>実績と目標、このままの見通しに加えて、残りの日数で1日いくら必要かが出ます。</span></div>
+      </div>
+      <div class="card rv">
+        <div class="phone"><div class="screen"><img src="/assets/uriba/week.webp" data-shot="week" width="720" height="1320" loading="lazy" decoding="async" alt="週のレポート"><div class="hl" style="--x:4%;--y:41.6%;--w:92%;--h:15.8%"></div><span class="pin" style="left:6%;top:41.6%">2</span></div></div>
+        <div class="cap"><span class="q">前週比・前年比</span><b>先週より、伸びているか</b><span>直近4週の売上を、目標比・前週比・前年比・欠品の回数と並べて見られます。</span></div>
+      </div>
+      <div class="card rv">
+        <div class="phone"><div class="screen"><img src="/assets/uriba/dept.webp" data-shot="dept" width="720" height="1320" loading="lazy" decoding="async" alt="部門別の売上"><div class="hl warn" style="--x:68%;--y:41.2%;--w:14%;--h:6.2%"></div><span class="pin warn" style="left:70%;top:41.2%">3</span></div></div>
+        <div class="cap"><span class="q">部門別</span><b>どの部門を見直すか</b><span>前週を下回った部門は色で目立ちます。デモ売場では「未分類」が前週比82%でした。</span></div>
+      </div>
+      <div class="card rv">
+        <div class="phone"><div class="screen"><img src="/assets/uriba/item.webp" data-shot="item" width="720" height="1320" loading="lazy" decoding="async" alt="商品別の構成比"><div class="hl" style="--x:6%;--y:48.8%;--w:88%;--h:27.6%"></div><span class="pin" style="left:8%;top:48.8%">4</span></div></div>
+        <div class="cap"><span class="q">商品別の構成比</span><b>何が売れているか</b><span>売れている順に並び、構成比と累計が分かります。デモ売場では上位3商品で61%でした。</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RECOMMEND -->
+<section style="padding-top:0">
+  <div class="w rec">
+    <div style="display:grid;gap:28px;min-width:0">
+      <div class="head rv" style="margin:0">
+        <span class="eyebrow">Recommendation</span>
+        <h2>次回の補充を、<br>経験だけに頼らない。</h2>
+        <p class="lead">数を入れたその場で、商品ごとに<b style="color:var(--ink)">「次回のおすすめ」</b>が出ます。担当者の経験はそのままに、そこへ記録という根拠を加えます。持ち込む数を最後に決めるのは、売場をいちばん知っている担当者です。</p>
+      </div>
+      <div class="readout rv" aria-label="画面の読み方の例">
+        <div class="ro-h">きのこ佃煮の例（デモ売場の画面）</div>
+        <div class="ro-row"><span>補充前</span><b class="num">10</b><span>＋ 補充</span><b class="num">2</b><span>＝ 補充後</span><b class="num">12</b></div>
+        <div class="ro-row"><span>前回の補充後 18 − 補充前 10 ＝ 販売</span><b class="num">8個</b><span>（¥4,800）</span></div>
+        <div class="ro-row ro-rec"><span>次回のおすすめ</span><b class="num">5</b><em>目安</em></div>
+      </div>
+      <div class="balance rv" aria-label="担当者の経験と売場の記録を合わせて補充数を決める図">
+        <div class="src"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="17" cy="11" r="5"/><path d="M7 29c1.3-5 5-8 10-8s8.7 3 10 8"/></svg><div><b>担当者の経験</b><span>売場の空気、天気、行事、お客さんの様子</span></div></div>
+        <div class="src"><svg viewBox="0 0 34 34" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M6 28V6M6 28h22M11 22l5-6 4 3 7-9"/></svg><div><b>売場の記録</b><span>補充前・補充の数から出た、販売数と売れ方</span></div></div>
+        <div class="merge" aria-hidden="true"><i></i><i></i><i></i></div>
+        <div class="decide">次回の補充数を決める<small>「目安」を参考に、担当者が判断</small></div>
+      </div>
+      <p class="note rv">おすすめ補充数は判断の目安です。販売数を約束するものではありません。</p>
+    </div>
+    <div class="rv rec-phone">
+      <div class="phone"><div class="screen"><img src="/assets/uriba/rec.webp" data-shot="rec" width="720" height="1231" loading="lazy" decoding="async" alt="記録画面。きのこ佃煮とのり佃煮に、次回のおすすめ5（目安）が表示されている">
+        <div class="hl" style="--x:52%;--y:31.9%;--w:37%;--h:3.9%"></div><span class="pin" style="left:93%;top:33.85%">1</span>
+        <div class="hl" style="--x:51%;--y:51.6%;--w:37%;--h:3.9%"></div><span class="pin" style="left:92%;top:53.55%">2</span>
+      </div></div>
+      <div class="tagline"><span class="pin-s">1</span>きのこ佃煮　次回のおすすめ 5<br><span class="pin-s">2</span>のり佃煮　次回のおすすめ 5</div>
+    </div>
+  </div>
+</section>
+
+<!-- CASE -->
+<section id="case" style="background:var(--paper);border-block:1px solid var(--rule)">
+  <div class="w case">
+    <div class="head rv" style="margin:0">
+      <span class="eyebrow">Case｜富山の水産加工会社</span>
+      <h2>記録を数字にして、<br>初めて分かったこと。</h2>
+      <p class="lead">毎回の補充を手帳に書き続けていた会社で、その記録を数字にして分析しました。見えてきたのは、連休の欠品の割合が平日の3〜5倍になっていることでした。</p>
+      <p class="note">ある1社の分析で分かった傾向です。すべての売場に当てはまるとは限りません。</p>
+    </div>
+    <div class="rv" style="display:grid;gap:22px">
+      <div class="big num">3〜5<small>倍</small></div>
+      <p style="font-family:var(--f-disp);font-weight:800;font-size:1.1rem;margin-top:-8px">連休の欠品の割合（平日との比較）</p>
+      <div class="bars" role="img" aria-label="平日を1としたとき、連休は3から5">
+        <div class="bar"><span>平日</span><div class="track"><div class="fill"></div></div></div>
+        <div class="bar"><span>連休</span><div class="track"><div class="range"></div></div></div>
+        <div class="scale"><span></span><div><span>0</span><span>1</span><span>2</span><span>3</span><span>4</span><span>5</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TANAROKU LINK -->
+<section class="band" id="tanaroku">
+  <div class="w">
+    <div class="head rv">
+      <span class="eyebrow">Works with Tanaroku</span>
+      <h2>工場の在庫から、<br>売場の棚まで。一本の線に。</h2>
+      <p class="lead">売場ノートは、MAREの在庫・生産管理システム「タナロク」と連動できます。工場や倉庫の在庫はタナロク、売場の棚は売場ノート。つなげると、作ってから売れるまでを同じ流れで追えます。</p>
+    </div>
+    <div class="link rv">
+      <div class="sys">
+        <div class="nm">タナロク <small>FACTORY / WAREHOUSE</small></div>
+        <div class="chain">
+          <div class="lk"><i></i>作った<span>生産</span></div>
+          <div class="lk"><i></i>持った<span>在庫</span></div>
+          <div class="lk"><i></i>動いた<span>出庫</span></div>
+        </div>
+      </div>
+      <div class="pipe" aria-hidden="true">
+        <svg viewBox="0 0 120 200" preserveAspectRatio="none"><path d="M0 100 H120" stroke="#22384f" stroke-width="2" fill="none"/><path class="flowline" d="M0 100 H120" stroke="#6cc3d6" stroke-width="3" fill="none"/></svg>
+        <span class="lbl">連動</span>
+      </div>
+      <div class="sys us">
+        <div class="nm">売場ノート <small>SALES FLOOR</small></div>
+        <div class="chain">
+          <div class="lk"><i></i>補充した<span>補充</span></div>
+          <div class="lk"><i></i>棚に残った<span>補充前</span></div>
+          <div class="lk"><i></i>売れた<span>販売数・売上</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="back rv"><svg viewBox="0 0 40 22" fill="none" stroke="#6cc3d6" stroke-width="2" stroke-linecap="round"><path d="M38 6H8M14 1 8 6l6 5"/><path d="M2 16h30" stroke-dasharray="3 4"/></svg><p><b>売場で売れた数を、工場側の判断へ。</b>出庫の先で何が売れたかが分かると、次に何を作り、どこへ持っていくかを考えやすくなります。</p></div>
+    <div class="gains">
+      <div class="rv"><b>出庫の先が見える</b><span>出した商品が、どの売場で、どれだけ売れたか。</span></div>
+      <div class="rv"><b>同じ商品名で追える</b><span>工場の在庫と売場の棚を、商品ごとにつなげて見られます。</span></div>
+      <div class="rv"><b>入口はどちらからでも</b><span>売場ノートだけ、タナロクだけでも使えます。</span></div>
+    </div>
+    <div class="cta-row rv" style="margin-top:34px"><a class="btn" href="/tanaroku/" style="background:#6cc3d6;color:#06202a">タナロクを見る →</a></div>
+  </div>
+</section>
+
+<!-- PRICE -->
+<section id="price">
+  <div class="w">
+    <div class="head rv">
+      <span class="eyebrow">Pricing｜税別</span>
+      <h2>まずは3か月、試してみませんか？</h2>
+    </div>
+    <div class="plans">
+      <div class="plan rv">
+        <h3>ツールプラン<small>まずは自分たちで使ってみたい</small></h3>
+        <div class="price num">9,800<small>円 / 月</small></div>
+        <p class="init">初期費 30,000円（売場・商品・単価の登録代行、操作の説明）</p>
+        <ul>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3 3 7-7"/></svg><span>標準の機能すべて<small>記録・週のレポート・前年比・他店比較・欠品など</small></span></li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3 3 7-7"/></svg><span>売場 2か所まで<small>3か所目からは伴走プランへ</small></span></li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3 3 7-7"/></svg><span>ユーザー 2名まで<small>3人目から1名 月1,000円</small></span></li>
+        </ul>
+      </div>
+      <div class="plan hot rv">
+        <span class="badge">おすすめ</span>
+        <h3>伴走プラン<small>数字の読み方から一緒に</small></h3>
+        <div class="price num">29,800<small>円 / 月</small></div>
+        <p class="init">初期費 50,000円（ツールプランの内容＋過去の手帳の取り込み、目標の立て方の初回打ち合わせ）</p>
+        <ul>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3 3 7-7"/></svg><span>ツールプランのすべて</span></li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3 3 7-7"/></svg><span>月1回のオンライン面談（60分）<small>週のレポートを一緒に読み、目標と週の計画を一緒に立てます</small></span></li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3 3 7-7"/></svg><span>売場 10か所まで<small>11か所目からは個別にご相談</small></span></li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3 3 7-7"/></svg><span>ユーザー 4名まで<small>5人目から1名 月1,000円</small></span></li>
+        </ul>
+      </div>
+      <div class="plan rv">
+        <span class="badge alt">1社目限定</span>
+        <h3>先行導入<small>3か月だけ、伴走プランと同じ内容で</small></h3>
+        <div class="price num">15,000<small>円 / 月</small></div>
+        <p class="init">初期費 30,000円　期間 3か月</p>
+        <ul>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3 3 7-7"/></svg><span>伴走プランと同じ内容</span></li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3 3 7-7"/></svg><span>条件<small>月1回のご感想／数字を事例に使わせていただきます（社名は出しません）</small></span></li>
+          <li><svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><path d="M3 8.5l3 3 7-7"/></svg><span>3か月後に、本契約か終了かを選べます</span></li>
+        </ul>
+      </div>
+    </div>
+    <div class="common rv">
+      <p>あとから足す売場・商品の登録：ご自身で登録する場合は無料。こちらで代行する場合は1か所10,000円（1回だけ）。</p>
+      <p>表示の金額はすべて税別です。</p>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact" style="background:var(--paper);border-top:1px solid var(--rule)">
+  <div class="w final rv">
+    <span class="eyebrow">Demo</span>
+    <h2>まずは実際の画面をご覧いただき、貴社の売場管理に活用できるかご相談ください。</h2>
+    <p class="lead">デモ売場の画面で、記録から週のレポートまでをご案内します。</p>
+    <div class="cta-row">
+      <a class="btn pri" href="https://docs.google.com/forms/d/e/1FAIpQLSeMhlQkFVUytD8UYxsfwPngYTdQ1wj4fDfEeiPfBqGWtVUaCQ/viewform?usp=publish-editor" target="_blank" rel="noopener noreferrer">デモを相談する</a>
+      <a class="btn ghost" href="https://uriba-note-saas.mare-corp-info.workers.dev/" target="_blank" rel="noopener">売場ノートを開く ↗</a>
+    </div>
+    <p class="url">フォームが開けない場合：mare.corp.info@gmail.com</p>
+  </div>
+</section>
+
+<footer><div class="w"><span>売場ノート ｜ 提供：<a href="/">MARE</a></span><span>画面はデモ売場のものです。</span><a href="/">← MARE公式サイトへ</a></div></footer>
+
+<script>
+document.documentElement.classList.add('js');
+var RM=window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+// hero: cycle the main phone
+(function(){
+  var imgs=[].slice.call(document.querySelectorAll('#heroScreen img')),lab=document.getElementById('heroLabel');
+  var names=['記録とおすすめ','ノート','週のレポート','今月の実績'],k=0;
+  if(RM)return;
+  setInterval(function(){imgs[k].classList.add('off');k=(k+1)%imgs.length;imgs[k].classList.remove('off');lab.textContent=names[k];},3200);
+})();
+
+// steps: sticky phone follows the active step
+(function(){
+  var steps=[].slice.call(document.querySelectorAll('.step')),sc=document.getElementById('stScreen');
+  if(!sc)return;
+  var imgs=sc.querySelectorAll('img'),h1=document.getElementById('stHl1'),h2=document.getElementById('stHl2'),pin=document.getElementById('stPin'),dots=document.querySelectorAll('#stDots i');
+  // [image, hl1, hl2, pin]
+  var S=[
+    [0,[6,27.5,43,7.5],[53,20.5,41,5.1],[8,27.5]],
+    [3,[6,31.9,44.5,3.9],[52,31.9,37,3.9],[93,33.85]],
+    [1,[4,13.4,71,6.9],[83,25.6,13,42],[6,13.4]],
+    [2,[27,18.6,35,6],[68,84.4,14,4.6],[29,18.6]]
+  ];
+  function box(el,b){el.style.setProperty('--x',b[0]+'%');el.style.setProperty('--y',b[1]+'%');el.style.setProperty('--w',b[2]+'%');el.style.setProperty('--h',b[3]+'%');}
+  function set(i){var s=S[i];imgs.forEach(function(im,j){im.classList.toggle('off',j!==s[0])});box(h1,s[1]);box(h2,s[2]);pin.style.left=s[3][0]+'%';pin.style.top=s[3][1]+'%';pin.textContent=i+1;
+    steps.forEach(function(st,j){st.classList.toggle('on',j===i)});dots.forEach(function(d,j){d.classList.toggle('on',j===i)});}
+  set(0);
+  if(!('IntersectionObserver' in window))return;
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)set(+e.target.dataset.i)})},{rootMargin:'-45% 0px -45% 0px'});
+  steps.forEach(function(s){io.observe(s)});
+})();
+
+// gentle rise-in; content is visible without it
+(function(){
+  var els=document.querySelectorAll('.rv');
+  if(RM||!('IntersectionObserver' in window)){els.forEach(function(e){e.classList.add('in')});return;}
+  var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target)}})},{rootMargin:'0px 0px -8% 0px'});
+  els.forEach(function(e){var r=e.getBoundingClientRect();if(r.top<innerHeight)e.classList.add('in');else io.observe(e)});
+})();
+</script>
+</body></html>
