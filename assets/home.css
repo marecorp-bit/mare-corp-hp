@@ -1,0 +1,80 @@
+/* トップページ専用。会社案内（名刺）として読めることを優先し、飾りは置かない。
+   色：紙 #f6f8f7／墨紺 #12283a／海 #1f5f7a／淡海 #e3ecee／罫 #cdd7da */
+:root{--paper:#f6f8f7;--ink:#12283a;--sea:#1f5f7a;--mist:#e3ecee;--rule:#cdd7da;--soft:#51646f;--mincho:'Shippori Mincho',serif;--gothic:'Zen Kaku Gothic New',sans-serif}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth;-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:400 16px/1.95 var(--gothic);-webkit-font-smoothing:antialiased}
+img{max-width:100%;height:auto;display:block}
+a{color:var(--sea);text-underline-offset:.22em;text-decoration-thickness:1px}
+a:hover{text-decoration-thickness:2px}
+a:focus-visible{outline:2px solid var(--sea);outline-offset:3px;border-radius:2px}
+/* 文節の途中で折り返さない（「つな／ぐ、」のような改行を防ぐ） */
+.ph{display:inline-block}
+.w{width:min(1080px,100% - 48px);margin-inline:auto}
+
+.top{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding:22px 0;border-bottom:1px solid var(--rule)}
+.top .name{font:600 22px/1 var(--mincho);letter-spacing:.24em;color:var(--ink);text-decoration:none}
+.top nav{display:flex;gap:22px;font-size:14px}
+.top nav a{color:var(--ink);text-decoration:none;white-space:nowrap}
+.top nav a:hover{text-decoration:underline}
+
+.lead{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:56px;align-items:center;padding:72px 0 80px}
+.lead h1{margin:0;font:600 clamp(27px,3.5vw,42px)/1.6 var(--mincho);letter-spacing:.04em}
+.lead p{margin:26px 0 0;max-width:30em;color:var(--soft)}
+.lead .go{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px 26px;font-weight:500}
+.screens{position:relative;padding-bottom:6%}
+.screens .pc{border:1px solid var(--rule);border-radius:10px;box-shadow:0 24px 50px -30px rgba(18,40,58,.45)}
+.screens .sp{position:absolute;right:-2%;bottom:0;width:27%;border:5px solid #fff;border-radius:18px;box-shadow:0 18px 40px -18px rgba(18,40,58,.55)}
+.screens figcaption,.shot figcaption{margin-top:14px;font-size:12.5px;color:var(--soft)}
+.screens figcaption{max-width:68%}
+
+section{padding:76px 0;border-top:1px solid var(--rule)}
+h2{margin:0 0 40px;font:600 clamp(21px,2.4vw,26px)/1.6 var(--mincho);letter-spacing:.08em}
+
+.biz{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:28px 56px;padding:44px 0;border-top:1px solid var(--rule)}
+.biz:first-of-type{border-top:0;padding-top:0}
+.biz:last-of-type{padding-bottom:0}
+.biz h3{margin:0;font:600 clamp(22px,2.6vw,28px)/1.5 var(--mincho);letter-spacing:.06em}
+.biz .kind{margin:6px 0 0;font-size:14px;color:var(--soft)}
+.biz .say{margin:0 0 14px;font:600 clamp(18px,2vw,21px)/1.7 var(--mincho)}
+.biz p{margin:0 0 14px}
+.biz ul{margin:0 0 18px;padding:0;list-style:none}
+.biz li{padding:9px 0;border-bottom:1px solid var(--rule);font-size:15px}
+.biz li:first-child{border-top:1px solid var(--rule)}
+.biz .go{display:flex;flex-wrap:wrap;gap:8px 26px;font-weight:500}
+.biz .shot{grid-column:2;margin:8px 0 0}
+.shot.pc img{border:1px solid var(--rule);border-radius:8px}
+.shot.sp{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap}
+.shot.sp img{width:min(190px,44%);border:1px solid var(--rule);border-radius:16px}
+.shot.sp figcaption{flex-basis:100%}
+.pair{margin:0 0 44px;padding:18px 22px;background:var(--mist);border-radius:8px;font-size:15px}
+
+.about{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:28px 56px}
+.about h2{margin:0}
+.about p{margin:0 0 18px;max-width:34em}
+.about .line{margin-top:28px;padding-top:22px;border-top:1px solid var(--rule);font:600 18px/1.8 var(--mincho)}
+
+.ask{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:28px 56px}
+.ask h2{margin:0}
+.ask p{margin:0 0 20px;max-width:34em}
+.btn{display:inline-block;padding:14px 30px;border-radius:6px;background:var(--ink);color:#fff;font-weight:600;text-decoration:none}
+.btn:hover{background:var(--sea)}
+.ask small{display:block;margin-top:16px;color:var(--soft);font-size:13.5px}
+
+footer{border-top:1px solid var(--rule);padding:30px 0 44px;font-size:13.5px;color:var(--soft)}
+footer .w{display:flex;flex-wrap:wrap;gap:10px 26px;justify-content:space-between}
+footer nav{display:flex;flex-wrap:wrap;gap:8px 20px}
+footer a{color:var(--soft)}
+
+@media (max-width:820px){
+  .w{width:calc(100% - 40px)}
+  .top{padding:18px 0}
+  .top nav{gap:16px;font-size:13.5px}
+  .lead{grid-template-columns:1fr;gap:40px;padding:44px 0 56px}
+  section{padding:54px 0}
+  h2{margin-bottom:28px}
+  .biz,.about,.ask{grid-template-columns:1fr;gap:18px}
+  .biz{padding:36px 0}
+  .biz .shot{grid-column:1}
+}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
