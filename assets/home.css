@@ -19,7 +19,9 @@ a:focus-visible{outline:2px solid var(--sea);outline-offset:3px;border-radius:2p
 .top nav a:hover{text-decoration:underline}
 
 .lead{display:grid;grid-template-columns:minmax(0,1.05fr) minmax(0,.95fr);gap:56px;align-items:center;padding:72px 0 80px}
-.lead h1{margin:0;font:600 clamp(27px,3.5vw,42px)/1.6 var(--mincho);letter-spacing:.04em}
+.lead h1{margin:0;font:600 clamp(22px,2.75vw,36px)/1.6 var(--mincho);letter-spacing:.04em}
+.lead h1 .ln{display:block;white-space:nowrap}
+.lead h1 .hang{text-indent:-.5em}
 .lead p{margin:26px 0 0;max-width:30em;color:var(--soft)}
 .lead .go{margin-top:30px;display:flex;flex-wrap:wrap;gap:10px 26px;font-weight:500}
 .screens{position:relative;padding-bottom:6%}
@@ -71,6 +73,7 @@ footer a{color:var(--soft)}
   .top{padding:18px 0}
   .top nav{gap:16px;font-size:13.5px}
   .lead{grid-template-columns:1fr;gap:40px;padding:44px 0 56px}
+  .lead h1{font-size:clamp(18px,5.8vw,36px)}
   section{padding:54px 0}
   h2{margin-bottom:28px}
   .biz,.about,.ask{grid-template-columns:1fr;gap:18px}
@@ -78,3 +81,4 @@ footer a{color:var(--soft)}
   .biz .shot{grid-column:1}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+@media (max-width:360px){.top .name{letter-spacing:.14em}.top nav{gap:11px;font-size:12.5px}}
