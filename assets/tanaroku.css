@@ -12,3 +12,8 @@
 .lc-pipe{position:relative;height:3px;background:var(--line);margin:0 8px;overflow:hidden}.lc-pipe i{position:absolute;top:0;width:16px;height:3px;background:var(--teal);animation:lcflow 1.8s linear infinite}.lc-pipe i:nth-child(2){animation-delay:.6s}.lc-pipe i:nth-child(3){animation-delay:1.2s}@keyframes lcflow{from{left:-16px}to{left:100%}}
 @media(max-width:820px){.link-grid{grid-template-columns:1fr;gap:36px}.link-chain{grid-template-columns:1fr;gap:0}.lc-pipe{width:3px;height:40px;margin:0 auto}.lc-pipe i{width:3px;height:14px;left:0;animation-name:lcflowv}@keyframes lcflowv{from{top:-14px}to{top:100%}}}
 @media(prefers-reduced-motion:reduce){.lc-pipe i{animation:none}}
+/* 工場・倉庫｜売場 の切り替え（タナロク 売場のページと同じ形） */
+.tnk-switch{display:flex;width:max-content;max-width:100%;align-items:center;gap:4px;margin-bottom:18px;padding:4px;border:1px solid var(--line);border-radius:999px;background:var(--white);font-size:13px;font-weight:700}
+.tnk-switch span{padding:0 10px 0 12px;color:var(--muted);letter-spacing:.06em}
+.tnk-switch a{padding:7px 14px;border-radius:999px;color:var(--ink);text-decoration:none;white-space:nowrap}
+.tnk-switch a[aria-current]{background:var(--teal);color:#fff}
