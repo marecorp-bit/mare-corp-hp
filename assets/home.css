@@ -50,6 +50,19 @@ h2{margin:0 0 40px;font:600 clamp(21px,2.4vw,26px)/1.6 var(--mincho);letter-spac
 .shot.sp{display:flex;gap:16px;align-items:flex-end;flex-wrap:wrap}
 .shot.sp img{width:min(190px,44%);border:1px solid var(--rule);border-radius:16px}
 .shot.sp figcaption{flex-basis:100%}
+.biz li b{font-weight:500}
+.case dl,.can{margin:0}
+.case dt{margin-top:14px;font-size:13px;color:var(--soft)}
+.case dd{margin:2px 0 0}
+.can{display:grid;grid-template-columns:minmax(0,11em) minmax(0,1fr);border-top:1px solid var(--rule)}
+.can dt,.can dd{margin:0;padding:12px 0;border-bottom:1px solid var(--rule)}
+.can dt{font-weight:500;padding-right:16px}
+.can dd{font-size:15px}
+.askq{margin:0 0 20px;padding-left:1.4em}
+.lead.solo{grid-template-columns:1fr;padding-bottom:64px}
+.lead.solo p{max-width:36em}
+.lead .crumb{margin:0 0 22px;font-size:13px}
+.intro{margin:-18px 0 40px;color:var(--soft)}
 .pair{margin:0 0 44px;padding:18px 22px;background:var(--mist);border-radius:8px;font-size:15px}
 
 .about{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:28px 56px}
@@ -80,6 +93,10 @@ footer a{color:var(--soft)}
   .biz,.about,.ask{grid-template-columns:1fr;gap:18px}
   .biz{padding:36px 0}
   .biz .shot{grid-column:1}
+  .can{grid-template-columns:1fr}
+  .can dt{border-bottom:0;padding-bottom:0}
+  .can dd{padding-top:2px}
+  .intro{margin-top:-8px}
 }
 @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
 @media (max-width:360px){.top .name{letter-spacing:.14em}.top nav{gap:11px;font-size:12.5px}}
